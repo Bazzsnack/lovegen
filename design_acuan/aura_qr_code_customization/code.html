@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QR Code Customization Modal - Aura</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#23333a",
+                        "on-tertiary-fixed": "#3f001c",
+                        "on-secondary-container": "#6e0034",
+                        "outline": "#7f7478",
+                        "on-primary-fixed": "#25181e",
+                        "tertiary-container": "#ffe3e9",
+                        "surface-container-highest": "#d4e5ef",
+                        "on-surface": "#0d1e25",
+                        "tertiary-fixed": "#ffd9e2",
+                        "primary-container": "#fce4ec",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#0d1e25",
+                        "secondary-fixed": "#ffd9e1",
+                        "tertiary-fixed-dim": "#ffb1c7",
+                        "inverse-primary": "#d7c1c8",
+                        "on-secondary-fixed-variant": "#8b0e45",
+                        "surface-bright": "#f4faff",
+                        "surface-variant": "#d4e5ef",
+                        "text-muted": "#607D8B",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#6b5a60",
+                        "on-primary-container": "#76646b",
+                        "inverse-on-surface": "#e2f3fd",
+                        "outline-variant": "#d0c3c7",
+                        "surface-container": "#dff1fb",
+                        "on-tertiary-fixed-variant": "#8e0048",
+                        "on-secondary-fixed": "#3f001b",
+                        "surface": "#f4faff",
+                        "border-subtle": "#F5F5F5",
+                        "background": "#f4faff",
+                        "surface-blush": "#FFF9FB",
+                        "secondary-container": "#fd6c9c",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#524249",
+                        "secondary": "#ab2c5d",
+                        "on-tertiary-container": "#ca146b",
+                        "surface-tint": "#6b5a60",
+                        "tertiary": "#ba0060",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#d7c1c8",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#ffb1c5",
+                        "surface-container-high": "#d9ebf5",
+                        "surface-dim": "#cbdde7",
+                        "surface-container-low": "#e7f6ff",
+                        "primary-fixed": "#f4dce4",
+                        "on-surface-variant": "#4d4447"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "section-gap": "80px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Playfair Display"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Playfair Display"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom styled range input */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #ab2c5d; /* secondary color */
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 2px 4px rgba(171, 44, 93, 0.3);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #d4e5ef; /* surface-variant */
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen relative font-sans text-on-surface antialiased">
+<!-- Abstract Background to represent the underlying dashboard/canvas -->
+<div aria-hidden="true" class="absolute inset-0 z-0 overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-surface-blush to-surface-container-low opacity-50"></div>
+<div class="absolute -top-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-primary-fixed/20 blur-3xl"></div>
+<div class="absolute bottom-[10%] -left-[10%] w-[40vw] h-[40vw] rounded-full bg-secondary-fixed/10 blur-3xl"></div>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-margin-mobile md:p-margin-desktop bg-inverse-surface/20 backdrop-blur-md transition-opacity duration-300">
+<!-- Modal Card -->
+<div class="relative w-full max-w-[900px] bg-surface-container-lowest rounded-[24px] shadow-2xl overflow-hidden flex flex-col md:flex-row transform transition-all">
+<!-- Close Button (Absolute) -->
+<button aria-label="Close modal" class="absolute top-4 right-4 z-10 p-2 rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors focus:outline-none">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<!-- Left Panel: Preview Area -->
+<div class="w-full md:w-1/2 bg-surface-blush p-8 md:p-12 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-border-subtle relative overflow-hidden">
+<!-- Decorative background blob in preview -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/40 rounded-full blur-2xl"></div>
+<div class="relative z-10 w-full max-w-[280px] aspect-square bg-white rounded-2xl shadow-lg border border-border-subtle p-6 flex items-center justify-center group transition-transform duration-500 hover:scale-[1.02]">
+<!-- Simulated QR Code placeholder with soft pink color -->
+<img alt="QR Code Preview" class="w-full h-full object-cover rounded-lg opacity-90 sepia-[.2] hue-rotate-[320deg] contrast-125 mix-blend-multiply" data-alt="A clean, minimalist QR code graphic rendered in a deep, sophisticated rose pink color against a pure white background. The pattern is intricate and modern, suitable for a high-end wedding editorial or premium design portfolio. Soft, ambient lighting creates a gentle drop shadow beneath the code, enhancing the elegant, tactile feel of the digital interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdOSKuTViv8laBV3hVnypoFWngsQe4c5cy2JcsJ35uaoCbL_asr3FWCZLmFfRGAx-YwQLLn0CWBhjdllKX6EL0Rn6j4Nar96UsqFcho42jH5G6S7y_qaa2EjdgcVxhMFhGf4sppGansiovFE4e9jHJ9OnFQ0rZ747V5nEuVoTvDtgR3KLAL1-HfZ9rtbSDRT8XwIRzYBgo3BtGmwPtlYr91xmlGJZwWVV1Jea6COb1Vh5eiq3xKVCj-dhG_brcnlcqAVhds9yOP0E"/>
+</div>
+<p class="mt-8 font-label-md text-label-md text-text-muted text-center max-w-[240px]">Preview updates in real-time as you customize your design.</p>
+</div>
+<!-- Right Panel: Customization Controls -->
+<div class="w-full md:w-1/2 p-8 md:p-12 bg-white flex flex-col justify-between">
+<div>
+<!-- Header -->
+<div class="mb-10">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-2 tracking-tight">Customize Your Love Link</h2>
+<p class="font-body-md text-body-md text-text-muted">Personalize the look of your code to match your unique aesthetic.</p>
+</div>
+<div class="space-y-8">
+<!-- Control Section: Shape -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-4">QR Code Shape</label>
+<div class="flex gap-4">
+<button aria-label="Square Shape" class="flex-1 flex flex-col items-center justify-center py-4 border-2 border-secondary bg-secondary-container/10 rounded-xl text-secondary transition-all">
+<span class="material-symbols-outlined mb-2" data-icon="square">square</span>
+<span class="font-label-sm text-label-sm">Square</span>
+</button>
+<button aria-label="Circle Shape" class="flex-1 flex flex-col items-center justify-center py-4 border-2 border-border-subtle hover:border-outline-variant text-on-surface-variant hover:text-on-surface rounded-xl transition-all">
+<span class="material-symbols-outlined mb-2" data-icon="circle">circle</span>
+<span class="font-label-sm text-label-sm">Circle</span>
+</button>
+<button aria-label="Heart Shape" class="flex-1 flex flex-col items-center justify-center py-4 border-2 border-border-subtle hover:border-outline-variant text-on-surface-variant hover:text-on-surface rounded-xl transition-all">
+<span class="material-symbols-outlined mb-2" data-icon="favorite_border">favorite_border</span>
+<span class="font-label-sm text-label-sm">Heart</span>
+</button>
+</div>
+</div>
+<!-- Control Section: Color Picker -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-4">Foreground Color</label>
+<div class="flex flex-wrap gap-4 items-center">
+<!-- Selected Color -->
+<button aria-label="Deep Rose" class="w-10 h-10 rounded-full bg-secondary shadow-sm ring-2 ring-offset-2 ring-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[20px]" data-icon="check">check</span>
+</button>
+<!-- Other Colors -->
+<button aria-label="Slate Muted" class="w-10 h-10 rounded-full bg-primary shadow-sm hover:scale-110 transition-transform"></button>
+<button aria-label="Soft Black" class="w-10 h-10 rounded-full bg-on-surface shadow-sm hover:scale-110 transition-transform"></button>
+<button aria-label="Blush Pink" class="w-10 h-10 rounded-full bg-[#E5B8C0] shadow-sm hover:scale-110 transition-transform"></button>
+<button aria-label="Dusty Blue" class="w-10 h-10 rounded-full bg-[#B3C5D1] shadow-sm hover:scale-110 transition-transform"></button>
+<!-- Custom Color Trigger -->
+<button aria-label="Add custom color" class="w-10 h-10 rounded-full border-2 border-dashed border-outline-variant text-outline flex items-center justify-center hover:bg-surface-container-lowest hover:border-secondary transition-colors ml-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<!-- Control Section: Opacity Slider -->
+<div>
+<div class="flex justify-between mb-4">
+<label class="block font-label-md text-label-md text-on-surface-variant">Background Opacity</label>
+<span class="font-label-sm text-label-sm text-text-muted">80%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="80"/>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-12 flex items-center justify-end gap-4 pt-6 border-t border-border-subtle">
+<button class="px-6 py-2.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors focus:outline-none focus:ring-2 focus:ring-outline-variant">
+                        Cancel
+                    </button>
+<button class="px-6 py-2.5 rounded-full bg-secondary text-on-secondary font-label-md text-label-md shadow-md shadow-secondary/20 hover:opacity-90 hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                        Save Changes
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

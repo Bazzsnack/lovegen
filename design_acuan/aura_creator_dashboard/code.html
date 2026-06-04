@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aura Creator Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#23333a",
+                    "on-tertiary-fixed": "#3f001c",
+                    "on-secondary-container": "#6e0034",
+                    "outline": "#7f7478",
+                    "on-primary-fixed": "#25181e",
+                    "tertiary-container": "#ffe3e9",
+                    "surface-container-highest": "#d4e5ef",
+                    "on-surface": "#0d1e25",
+                    "tertiary-fixed": "#ffd9e2",
+                    "primary-container": "#fce4ec",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#0d1e25",
+                    "secondary-fixed": "#ffd9e1",
+                    "tertiary-fixed-dim": "#ffb1c7",
+                    "inverse-primary": "#d7c1c8",
+                    "on-secondary-fixed-variant": "#8b0e45",
+                    "surface-bright": "#f4faff",
+                    "surface-variant": "#d4e5ef",
+                    "text-muted": "#607D8B",
+                    "surface-container-lowest": "#ffffff",
+                    "primary": "#6b5a60",
+                    "on-primary-container": "#76646b",
+                    "inverse-on-surface": "#e2f3fd",
+                    "outline-variant": "#d0c3c7",
+                    "surface-container": "#dff1fb",
+                    "on-tertiary-fixed-variant": "#8e0048",
+                    "on-secondary-fixed": "#3f001b",
+                    "surface": "#f4faff",
+                    "border-subtle": "#F5F5F5",
+                    "background": "#f4faff",
+                    "surface-blush": "#FFF9FB",
+                    "secondary-container": "#fd6c9c",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed-variant": "#524249",
+                    "secondary": "#ab2c5d",
+                    "on-tertiary-container": "#ca146b",
+                    "surface-tint": "#6b5a60",
+                    "tertiary": "#ba0060",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#d7c1c8",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed-dim": "#ffb1c5",
+                    "surface-container-high": "#d9ebf5",
+                    "surface-dim": "#cbdde7",
+                    "surface-container-low": "#e7f6ff",
+                    "primary-fixed": "#f4dce4",
+                    "on-surface-variant": "#4d4447"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "container-max": "1200px",
+                    "base": "8px",
+                    "margin-mobile": "16px",
+                    "section-gap": "80px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Playfair Display"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "headline-sm": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Playfair Display"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: theme('colors.surface-blush'); }
+        .soft-shadow { box-shadow: 0 10px 40px -10px rgba(240, 98, 146, 0.08); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: theme('colors.outline-variant'); border-radius: 20px; }
+    </style>
+</head>
+<body class="font-body-md text-body-md text-on-surface antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full p-6 bg-surface-container-lowest border-r border-border-subtle shadow-md h-screen w-64 fixed left-0 top-0 z-20">
+<div class="mb-10">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-secondary">Aura</h1>
+<p class="font-label-sm text-label-sm text-text-muted mt-1">Creator Studio</p>
+</div>
+<button class="w-full bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md py-3 px-4 rounded-full mb-8 shadow-sm hover:opacity-80 transition-opacity duration-300 flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+            Create New Site
+        </button>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all ease-in-out hover:translate-x-1 duration-300" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 0;">home</span>
+                Home
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-label-md text-label-md transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">magic_button</span>
+                Builder
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all ease-in-out hover:translate-x-1 duration-300" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 0;">auto_awesome_motion</span>
+                Assets
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all ease-in-out hover:translate-x-1 duration-300" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 0;">qr_code_2</span>
+                QR Codes
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all ease-in-out hover:translate-x-1 duration-300" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 0;">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all ease-in-out hover:translate-x-1 duration-300" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+                Help Center
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col md:ml-64 h-screen relative">
+<!-- TopNavBar (Mobile Only for Navigation, acts as Header on Desktop) -->
+<header class="w-full h-20 bg-surface-blush flex justify-between items-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-b border-border-subtle shadow-sm z-10 sticky top-0">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined md:hidden text-primary cursor-pointer">menu</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface hidden md:block">Site Builder</h2>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-text-muted hover:text-primary font-body-md text-body-md ease-out duration-300 hover:opacity-80 transition-opacity" href="#">Dashboard</a>
+<a class="text-secondary font-bold border-b-2 border-secondary font-body-md text-body-md ease-out duration-300" href="#">Sites</a>
+<a class="text-text-muted hover:text-primary font-body-md text-body-md ease-out duration-300 hover:opacity-80 transition-opacity" href="#">Templates</a>
+<a class="text-text-muted hover:text-primary font-body-md text-body-md ease-out duration-300 hover:opacity-80 transition-opacity" href="#">Analytics</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-primary hover:opacity-80 transition-opacity"><span class="material-symbols-outlined">notifications</span></button>
+<button class="text-primary hover:opacity-80 transition-opacity"><span class="material-symbols-outlined">settings</span></button>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-border-subtle">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A close-up portrait of a cheerful young woman with blonde hair, soft natural lighting, light neutral background, creating a warm and approachable feeling consistent with a minimalist, aesthetically pleasing user interface design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmj_-lCVLuYb6DCggEUCgcT3XfQgAq1WTj0uwVfE_ipjFTsIPQFYk4eDZkYv6at_sLv3OyzRY280wAb3BZKoNHqow55R5GKHlp5Vxj7rerul6LQIAoDaFYbyBsj67Wy1IF3rVwB97DrP6BYJlUKHDhCzNXoD1g6y7X7k_zi481dMYjG4_wRAtoI3PrP0AQP4YORl5mzz7O6dZ_mnfGH03UaR8BScx6o53yOeWOBYTU6Jf-1yxPH84oYV9c1S5aJIs9yQNteRGCF4g"/>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-margin-mobile md:p-margin-desktop bg-surface-blush">
+<div class="max-w-4xl mx-auto">
+<div class="bg-surface-container-lowest rounded-xl border border-border-subtle soft-shadow p-8 md:p-10 relative overflow-hidden">
+<!-- Decorative subtle background element -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+<div class="mb-10">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Design Your Story</h2>
+<p class="font-body-md text-body-md text-text-muted">Fill in the details to generate your aesthetic micro-site.</p>
+</div>
+<form class="space-y-8">
+<!-- Grid Layout for Form -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Left Column -->
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-2" for="site-title">Micro-site Name</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all duration-300 placeholder:text-text-muted/60" id="site-title" placeholder="e.g., Emma &amp; James" type="text"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-2" for="custom-url">Custom Path URL</label>
+<div class="flex rounded-lg shadow-sm">
+<span class="inline-flex items-center px-4 rounded-l-lg border border-r-0 border-outline-variant bg-surface-container-low text-text-muted font-body-md text-body-md">
+                                            aura.love/
+                                        </span>
+<input class="flex-1 block w-full min-w-0 rounded-none rounded-r-lg border border-outline-variant bg-surface-container-lowest px-4 py-3 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all duration-300 placeholder:text-text-muted/60" id="custom-url" placeholder="emma-james" type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-2" for="music-select">Background Music</label>
+<div class="relative">
+<select class="appearance-none w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all duration-300 pr-10 cursor-pointer" id="music-select">
+<option disabled="" selected="" value="">Select an acoustic track...</option>
+<option value="1">Acoustic Sunrise - John Mayer</option>
+<option value="2">Soft Piano Melody - Clair de Lune</option>
+<option value="3">Gentle Waves - Ambient Romance</option>
+<option value="none">No Music</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-outline">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column -->
+<div class="space-y-6">
+<div class="h-full flex flex-col">
+<label class="block font-label-md text-label-md text-on-surface mb-2">Hero Image</label>
+<div class="flex-1 border-2 border-dashed border-outline-variant hover:border-secondary rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center p-6 transition-colors duration-300 cursor-pointer group min-h-[200px]">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-secondary text-3xl">add_photo_alternate</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface font-semibold text-center mb-1">Click to upload or drag and drop</p>
+<p class="font-body-md text-label-sm text-text-muted text-center">SVG, PNG, JPG or GIF (max. 5MB)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Full Width Content Area -->
+<div class="pt-4">
+<label class="block font-label-md text-label-md text-on-surface mb-2" for="page-content">Section Content</label>
+<p class="font-label-sm text-label-sm text-text-muted mb-3">Add comma separated content blocks to build out your narrative.</p>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all duration-300 placeholder:text-text-muted/60 resize-y" id="page-content" placeholder="Our Story, The Proposal, Photo Gallery, RSVP..." rows="4"></textarea>
+</div>
+</form>
+<!-- Action Bar -->
+<div class="mt-12 pt-8 border-t border-border-subtle flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+<button class="bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md py-3 px-6 rounded-full shadow-sm hover:shadow-md transition-all duration-300 w-full sm:w-auto">
+                                Create Page
+                            </button>
+<button class="bg-primary-container hover:bg-tertiary-fixed-dim text-on-secondary-container font-label-md text-label-md py-3 px-6 rounded-full transition-colors duration-300 w-full sm:w-auto">
+                                Update Page
+                            </button>
+<button class="bg-transparent border border-outline hover:border-secondary text-on-surface hover:text-secondary font-label-md text-label-md py-3 px-6 rounded-full transition-colors duration-300 w-full sm:w-auto">
+                                View Page
+                            </button>
+</div>
+<button class="flex items-center justify-center gap-2 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-container font-label-md text-label-md py-3 px-6 rounded-full shadow-sm hover:shadow-md transition-all duration-300 w-full sm:w-auto ml-auto">
+<span class="material-symbols-outlined text-sm">qr_code</span>
+                            Create QR Code
+                        </button>
+</div>
+</div>
+</div>
+<!-- Bottom spacing -->
+<div class="h-24"></div>
+</div>
+</main>
+<script>
+        // Simple script to handle select focus state visual
+        document.getElementById('music-select').addEventListener('focus', function() {
+            this.parentElement.querySelector('.material-symbols-outlined').style.color = 'theme("colors.secondary")';
+        });
+        document.getElementById('music-select').addEventListener('blur', function() {
+            this.parentElement.querySelector('.material-symbols-outlined').style.color = '';
+        });
+    </script>
+</body></html>

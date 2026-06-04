@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --color-love-50: #fff0f5;
+  --color-love-100: #ffe0eb;
+  --color-love-200: #ffb3cc;
+  --color-love-300: #ff80aa;
+  --color-love-400: #ff4d88;
+  --color-love-500: #ff1a66;
+  --color-love-600: #e6005c;
+  --color-love-700: #b30047;
+  --color-love-800: #800033;
+  --color-love-900: #4d001f;
+  --color-love-950: #1a000a;
+
+  --color-surface: #0a0010;
+  --color-surface-raised: #150020;
+  --color-surface-overlay: #200030;
+
+  --font-display: var(--font-playfair), serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-cursive: var(--font-dancing), cursive;
+
+  --radius-4xl: 2rem;
+  --blur-xs: 2px;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.5s ease-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 26, 102, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(255, 26, 102, 0.6); }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+:root {
+  --background: var(--color-surface);
+  --foreground: #ffffff;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utilities */
+.soft-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.ambient-glow {
+  box-shadow: 0 0 40px rgba(255, 107, 157, 0.15);
+}
+
+.float-slow {
+  animation: var(--animate-float);
+  animation-duration: 8s;
+}
+
+.float-medium {
+  animation: var(--animate-float);
+  animation-duration: 6s;
+}
+
+.float-fast {
+  animation: var(--animate-float);
+  animation-duration: 4s;
+}
