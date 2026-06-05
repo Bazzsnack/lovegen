@@ -209,11 +209,13 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
               <Text 
                 fontSize={p.scale}
                 color="#ffffff"
-                outlineWidth={0.04 * p.scale}
+                outlineWidth={0.05 * p.scale}
+                outlineBlur={0.2 * p.scale}
                 outlineColor={theme?.particleGlow || '#ff66b2'}
                 font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf"
                 anchorX="center"
                 anchorY="middle"
+                material-toneMapped={false}
               >
                 {p.content}
               </Text>

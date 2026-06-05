@@ -17,7 +17,7 @@ function CustomEnvironment({ theme }: { theme: ThemeConfig }) {
   return (
     <>
       <color attach="background" args={['#000000']} />
-      <fog attach="fog" args={['#000000', 10, 40]} />
+      <fog attach="fog" args={['#000000', 30, 150]} />
       <ambientLight intensity={0.6} color={theme.lightColor} />
       <pointLight position={[10, 10, 10]} intensity={1.5} color={theme.accent} />
       <pointLight position={[-10, -10, -10]} intensity={0.8} color={theme.particleGlow} />
