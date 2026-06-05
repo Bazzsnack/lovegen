@@ -92,8 +92,8 @@ function ImageParticle({ url, position, scale, opacity }: {
 export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
   const groupRef = useRef<THREE.Group>(null);
 
-  // Kurangi jadi 80 agar tidak menumpuk dan terlalu ramai
-  const totalItems = 80; 
+  // Kurangi jadi 60 agar text dan foto tidak terlalu penuh
+  const totalItems = 60; 
 
   const particles = useMemo(() => {
     const items: ParticleState[] = [];
@@ -109,10 +109,10 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
 
       const rand = Math.random();
       
-      // Distribusi: 40% Teks, 15% Gambar, 45% Hati
-      if (rand < 0.40) {
+      // Distribusi: 20% Teks, 15% Gambar, 65% Hati
+      if (rand < 0.20) {
         type = 'text';
-      } else if (rand < 0.55 && images.length > 0) {
+      } else if (rand < 0.35 && images.length > 0) {
         type = 'image';
         content = images[Math.floor(Math.random() * images.length)];
       } else {
