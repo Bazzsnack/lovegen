@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
 import { RESERVED_SLUGS } from '@/lib/constants';
 
 export async function middleware(request: NextRequest) {
@@ -24,54 +23,35 @@ export async function middleware(request: NextRequest) {
   const slug = pathname.replace('/', '');
 
   // Don't process slugs with dots (likely static files)
-  if (slug.includes('.')) {
+  if (slug.includes('.') || !slug) {
     return NextResponse.next();
   }
 
   try {
-    // Initialize Supabase client for middleware
-    let supabaseResponse = NextResponse.next({
-      request,
-    });
+    // Use plain fetch instead of Supabase client (Edge Runtime compatible)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/slugs?slug=eq.${slug}&is_active=eq.true&select=page_id&limit=1`,
       {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll();
-          },
-          setAll(cookiesToSet: any[]) {
-            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-            supabaseResponse = NextResponse.next({
-              request,
-            });
-            cookiesToSet.forEach(({ name, value, options }) =>
-              supabaseResponse.cookies.set(name, value, options)
-            );
-          },
+        headers: {
+          'apikey': supabaseKey || '',
+          'Authorization': `Bearer ${supabaseKey}`,
         },
       }
     );
 
-    // Check if slug exists in the database
-    const { data: slugData } = await supabase
-      .from('slugs')
-      .select('page_id')
-      .eq('slug', slug)
-      .eq('is_active', true)
-      .single();
-
-    if (slugData && slugData.page_id) {
-      // Rewrite to the internal view route with the page ID
-      const url = request.nextUrl.clone();
-      url.pathname = `/view/${slugData.page_id}`;
-      return NextResponse.rewrite(url);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.length > 0 && data[0].page_id) {
+        const url = request.nextUrl.clone();
+        url.pathname = `/view/${data[0].page_id}`;
+        return NextResponse.rewrite(url);
+      }
     }
   } catch (error) {
     console.error('Middleware error:', error);
-    // If middleware fails, just pass through
     return NextResponse.next();
   }
 
