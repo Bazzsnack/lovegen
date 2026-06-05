@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '../ui/Button';
 import { CheckCircle2, Globe, Loader2, AlertCircle, Download, ExternalLink, Copy, Check } from 'lucide-react';
-import { publishPage } from '@/app/actions/publish';
+// import { publishPage } from '@/app/actions/publish';
 import QRCodeStyling from 'qr-code-styling';
 
 interface PublishStepProps {
@@ -116,9 +116,20 @@ export function PublishStep({ data }: PublishStepProps) {
         }
       }
       
-      // Step 2: Publish page
+      // Step 2: Publish page via API route instead of Server Action
       setPublishStatus('Mempublish halamanmu...');
-      const result = await publishPage({ ...data, imageUrls }, slug);
+      const publishRes = await fetch('/api/publish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formData: { ...data, imageUrls },
+          slug,
+        }),
+      });
+
+      const result = await publishRes.json();
       
       if (result.success) {
         // Build full URL for QR code
