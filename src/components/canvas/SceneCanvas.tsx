@@ -41,7 +41,7 @@ export function SceneCanvas({ pageData }: SceneCanvasProps) {
   return (
     <div className="w-full h-full absolute inset-0 bg-black touch-none">
       <Canvas
-        camera={{ position: [0, 0, 20], fov: 60 }}
+        camera={{ position: [0, 0, 30], fov: 75 }}
         gl={{ 
           antialias: true,
           alpha: false,
