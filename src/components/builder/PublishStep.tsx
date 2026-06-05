@@ -127,8 +127,8 @@ export function PublishStep({ data }: PublishStepProps) {
       } else {
         setError(result.error || "Gagal mempublish halaman.");
       }
-    } catch (e) {
-      setError("Terjadi kesalahan jaringan.");
+    } catch (e: any) {
+      setError(e?.message || "Terjadi kesalahan. Coba lagi.");
     } finally {
       setIsPublishing(false);
       setPublishStatus('');
