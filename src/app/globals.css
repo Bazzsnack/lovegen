@@ -1,5 +1,32 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Nabana';
+  src: url('/font/nabana.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/font/SFPRODISPLAYREGULAR.OTF') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/font/SFPRODISPLAYMEDIUM.OTF') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/font/SFPRODISPLAYBOLD.OTF') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+
 @theme {
   --color-love-50: #fff0f5;
   --color-love-100: #ffe0eb;
@@ -17,8 +44,9 @@
   --color-surface-raised: #150020;
   --color-surface-overlay: #200030;
 
-  --font-display: var(--font-playfair), serif;
-  --font-body: var(--font-inter), sans-serif;
+  --font-display: 'SF Pro Display', var(--font-playfair), serif;
+  --font-body: 'SF Pro Display', var(--font-inter), sans-serif;
+  --font-sans: 'SF Pro Display', sans-serif;
   --font-cursive: var(--font-dancing), cursive;
 
   --radius-4xl: 2rem;

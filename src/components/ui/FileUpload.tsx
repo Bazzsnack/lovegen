@@ -53,6 +53,8 @@ export function FileUpload({
       } else {
         onFileSelect(files.slice(0, maxFiles));
       }
+      // FIX: Reset input so the same file can be selected again after deletion
+      e.target.value = '';
     }
   };
 
@@ -72,7 +74,7 @@ export function FileUpload({
       >
         <input 
           type="file" 
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
           accept={accept}
           multiple={multiple}
           onChange={handleChange}

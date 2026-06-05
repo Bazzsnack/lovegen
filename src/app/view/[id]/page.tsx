@@ -35,10 +35,6 @@ export default async function PublishedPage({
       <AudioEntryOverlay 
         title={typedPageData.title} 
         audioUrl={typedPageData.audio_url}
-        onEnter={() => {
-          // You could trigger analytics API call here via a Client Component wrapper 
-          // or inside AudioEntryOverlay
-        }} 
       />
       
       <div className="absolute inset-0 z-0">
@@ -48,7 +44,7 @@ export default async function PublishedPage({
       {/* Optional: Add a subtle logo/watermark for free tier */}
       {/* 
       <div className="absolute bottom-4 right-4 z-10 pointer-events-none opacity-50">
-        <span className="text-white text-xs font-display">Created with Aura</span>
+        <span className="text-white text-xs font-display">Created with Lovegen</span>
       </div> 
       */}
     </main>

@@ -1,45 +1,38 @@
 export const THEME_CONFIGS = {
   'rose-petal': {
-    background: ['#1a0011', '#2d0a1f', '#0d0015'],
-    accent: '#ff6b9d',
-    particleGlow: '#ff8ab5',
-    decorationType: 'petals',
-    lightColor: '#ffb3cc',
-  },
-  'starlight': {
-    background: ['#0a0a2e', '#1a1a4e', '#000020'],
-    accent: '#b8c6ff',
-    particleGlow: '#dde4ff',
-    decorationType: 'stars',
-    lightColor: '#e8edff',
+    background: ['#000000', '#000000', '#000000'],
+    accent: '#ff0000',
+    particleGlow: 'rgba(255,102,178, 1)',
+    decorationType: 'hearts',
+    lightColor: '#ffffff',
   },
   'ocean-breeze': {
-    background: ['#001a2c', '#002a4a', '#001020'],
-    accent: '#4ecdc4',
-    particleGlow: '#7eddd6',
-    decorationType: 'bubbles',
-    lightColor: '#a0ebe5',
+    background: ['#000000', '#000000', '#000000'],
+    accent: '#00ccff',
+    particleGlow: 'rgba(0,255,255, 1)',
+    decorationType: 'hearts',
+    lightColor: '#ffffff',
   },
   'golden-hour': {
-    background: ['#1a1000', '#2d1a00', '#0d0800'],
-    accent: '#ffd700',
-    particleGlow: '#ffe44d',
-    decorationType: 'sparkles',
-    lightColor: '#fff0a0',
+    background: ['#000000', '#000000', '#000000'],
+    accent: '#ffdd00',
+    particleGlow: 'rgba(255,215,0, 1)',
+    decorationType: 'hearts',
+    lightColor: '#ffffff',
   },
   'midnight-bloom': {
-    background: ['#0d0020', '#1a0040', '#050010'],
+    background: ['#000000', '#000000', '#000000'],
     accent: '#9b59b6',
-    particleGlow: '#c39bd3',
-    decorationType: 'flowers',
-    lightColor: '#d7bde2',
+    particleGlow: 'rgba(255,0,255, 1)',
+    decorationType: 'hearts',
+    lightColor: '#ffffff',
   },
-  'aurora': {
-    background: ['#001a0d', '#002a1a', '#000d05'],
-    accent: '#00ff88',
-    particleGlow: '#66ffaa',
-    decorationType: 'ribbons',
-    lightColor: '#b3ffd9',
+  'starlight': {
+    background: ['#000000', '#000000', '#000000'],
+    accent: '#ffffff',
+    particleGlow: 'rgba(255,255,255, 1)',
+    decorationType: 'hearts',
+    lightColor: '#ffffff',
   },
 } as const;
 
@@ -49,6 +42,13 @@ export const RESERVED_SLUGS = [
   'terms', 'privacy'
 ];
 
+export const CURATED_SONGS = [
+  { id: 'old_love', name: 'Old Love', url: '/daftar_music/old_love.mp3' },
+  { id: 'beautiful_bazzi', name: 'Beautiful Bazzi', url: '/daftar_music/beautiful_bazzi.mp3' },
+  { id: 'shape_of_my_heart', name: 'Shape of My Heart', url: '/daftar_music/shape_of_my_heart.mp3' },
+  { id: 'angel_baby', name: 'Angel Baby', url: '/daftar_music/angel_baby.mp3' }
+];
+
 export const MAX_IMAGES = 10;
-export const MAX_IMAGE_SIZE_MB = 10;
+export const MAX_IMAGE_SIZE_MB = 5;
 export const MAX_AUDIO_SIZE_MB = 15;

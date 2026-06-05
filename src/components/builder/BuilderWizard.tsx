@@ -1,34 +1,34 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ContentStep } from './ContentStep';
 import { MediaStep } from './MediaStep';
 import { StyleStep } from './StyleStep';
-import { QRCodeStep } from './QRCodeStep';
 import { PublishStep } from './PublishStep';
 import { GlassPanel } from '../ui/GlassPanel';
 import { Button } from '../ui/Button';
 
 const STEPS = [
-  { id: 'content', label: '1. Content' },
-  { id: 'media', label: '2. Media' },
-  { id: 'style', label: '3. Style' },
-  { id: 'qr', label: '4. QR Code' },
-  { id: 'publish', label: '5. Publish' },
+  { id: 'content', label: '1. Teks & Ucapan' },
+  { id: 'media', label: '2. Foto & Lagu' },
+  { id: 'style', label: '3. Tema Warna' },
+  { id: 'publish', label: '4. Selesai' },
 ];
 
 export function BuilderWizard() {
+  const router = useRouter();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   
-  // Minimal form state to pass between steps
   const [formData, setFormData] = useState({
     title: '',
     subtitle: '',
-    phrases: [] as string[],
     theme: 'rose-petal',
     particleSpeed: 'medium',
     particleDensity: 'normal',
     fontPairing: 'playfair-inter',
+    images: [] as File[],
+    audioUrl: '/daftar_music/old_love.mp3',
   });
 
   const handleNext = () => {
@@ -40,6 +40,8 @@ export function BuilderWizard() {
   const handlePrev = () => {
     if (currentStepIndex > 0) {
       setCurrentStepIndex(i => i - 1);
+    } else {
+      router.push('/');
     }
   };
 
@@ -48,13 +50,11 @@ export function BuilderWizard() {
       case 0:
         return <ContentStep data={formData} onChange={data => setFormData({ ...formData, ...data })} />;
       case 1:
-        return <MediaStep />;
+        return <MediaStep data={formData} onChange={data => setFormData({ ...formData, ...data })} />;
       case 2:
         return <StyleStep data={formData} onChange={data => setFormData({ ...formData, ...data })} />;
       case 3:
-        return <QRCodeStep />;
-      case 4:
-        return <PublishStep />;
+        return <PublishStep data={formData} />;
       default:
         return null;
     }
@@ -74,10 +74,10 @@ export function BuilderWizard() {
                 <button
                   onClick={() => setCurrentStepIndex(index)}
                   className={`
-                    px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
-                    ${isActive ? 'bg-love-500 text-white shadow-lg shadow-love-500/25' : 
-                      isCompleted ? 'bg-white/10 text-white hover:bg-white/20' : 
-                      'text-white/40 hover:text-white/70'}
+                    px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap border
+                    ${isActive ? 'bg-white/10 backdrop-blur-md border-white/30 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 
+                      isCompleted ? 'bg-white/5 backdrop-blur-sm border-white/10 text-white hover:bg-white/10' : 
+                      'border-transparent text-white/40 hover:text-white/70'}
                   `}
                 >
                   {step.label}
@@ -101,17 +101,17 @@ export function BuilderWizard() {
         <Button 
           variant="outline" 
           onClick={handlePrev} 
-          disabled={currentStepIndex === 0}
         >
-          Previous Step
+          Kembali
         </Button>
-        <Button 
-          variant="primary" 
-          onClick={handleNext} 
-          disabled={currentStepIndex === STEPS.length - 1}
-        >
-          Next Step
-        </Button>
+        {currentStepIndex < STEPS.length - 1 && (
+          <Button 
+            variant="primary" 
+            onClick={handleNext}
+          >
+            Lanjut
+          </Button>
+        )}
       </div>
     </div>
   );

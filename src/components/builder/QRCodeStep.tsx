@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import React, { useState } from 'react';
 import { Select } from '../ui/Select';
 import { QRCodePreview } from '../qr/QRCodePreview';
 import { Input } from '../ui/Input';

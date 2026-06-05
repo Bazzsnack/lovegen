@@ -6,10 +6,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-gradient-to-r from-love-500 to-love-600 text-white shadow-lg shadow-love-500/25 hover:shadow-love-500/40 hover:scale-[1.02]',
-        secondary: 'bg-love-100 text-love-900 hover:bg-love-200',
-        outline: 'border border-love-200 bg-transparent text-love-600 hover:bg-love-50',
-        ghost: 'hover:bg-white/10 hover:text-love-100 text-white/70',
+        primary: 'bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:bg-white/20 hover:scale-[1.02]',
+        secondary: 'bg-white/5 backdrop-blur-md border border-white/10 text-white hover:bg-white/10',
+        outline: 'border border-white/20 bg-transparent text-white hover:bg-white/10',
+        ghost: 'hover:bg-white/10 hover:text-white text-white/70',
         glass: 'bg-white/5 backdrop-blur-md border border-white/10 text-white hover:bg-white/10',
       },
       size: {

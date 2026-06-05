@@ -18,8 +18,8 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Aura - Romance Micro-site Builder",
-  description: "Create your beautiful, romantic 3D micro-site with Aura.",
+  title: "Lovegen - Romance Micro-site Builder",
+  description: "Create your beautiful, romantic 3D micro-site with Lovegen.",
 };
 
 export default function RootLayout({

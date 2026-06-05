@@ -49,7 +49,7 @@ export interface ThemeConfig {
   background: string[];
   accent: string;
   particleGlow: string;
-  decorationType: 'petals' | 'stars' | 'bubbles' | 'sparkles' | 'flowers' | 'ribbons';
+  decorationType: string;
   lightColor: string;
 }
 
