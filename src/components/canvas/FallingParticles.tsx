@@ -109,10 +109,10 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
 
       const rand = Math.random();
       
-      // Distribusi: 15% Teks, 50% Gambar, 35% Hati (agar foto lebih banyak)
-      if (rand < 0.15) {
+      // Distribusi: 30% Teks, 25% Gambar, 45% Hati
+      if (rand < 0.30) {
         type = 'text';
-      } else if (rand < 0.65 && images.length > 0) {
+      } else if (rand < 0.55 && images.length > 0) {
         type = 'image';
         content = images[Math.floor(Math.random() * images.length)];
       } else {

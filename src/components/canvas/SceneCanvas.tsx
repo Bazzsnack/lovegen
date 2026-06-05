@@ -41,7 +41,7 @@ export function SceneCanvas({ pageData }: SceneCanvasProps) {
   return (
     <div className="w-full h-full absolute inset-0 bg-black touch-none">
       <Canvas
-        camera={{ position: [0, 0, 30], fov: 75 }}
+        camera={{ position: [0, 0, 25], fov: 65 }}
         gl={{ 
           antialias: true,
           alpha: false,
@@ -62,7 +62,7 @@ export function SceneCanvas({ pageData }: SceneCanvasProps) {
             autoRotateSpeed={0.3}
             enablePan={false}
             enableZoom={true}
-            maxDistance={30}
+            maxDistance={100}
             minDistance={5}
           />
           
