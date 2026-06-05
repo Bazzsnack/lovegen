@@ -92,8 +92,8 @@ function ImageParticle({ url, position, scale, opacity }: {
 export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
   const groupRef = useRef<THREE.Group>(null);
 
-  // Ditambah menjadi 150 agar lebih ramai (termasuk foto)
-  const totalItems = 150; 
+  // Kurangi jadi 80 agar tidak menumpuk dan terlalu ramai
+  const totalItems = 80; 
 
   const particles = useMemo(() => {
     const items: ParticleState[] = [];
@@ -109,8 +109,8 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
 
       const rand = Math.random();
       
-      // Distribusi: 30% Teks, 25% Gambar, 45% Hati
-      if (rand < 0.30) {
+      // Distribusi: 40% Teks, 15% Gambar, 45% Hati
+      if (rand < 0.40) {
         type = 'text';
       } else if (rand < 0.55 && images.length > 0) {
         type = 'image';
@@ -137,7 +137,7 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
         ],
         velocity: [
           isHeart ? (Math.random() - 0.5) * 0.02 : 0, 
-          isHeart ? (Math.random() * 0.03 + 0.01) : -0.05, // Hati naik, teks & foto turun
+          isHeart ? (Math.random() * 0.04 + 0.03) : -(Math.random() * 0.06 + 0.08), // Dipercepat!
           0 
         ],
         rotation: [rotX, rotY, rotZ],
@@ -186,6 +186,26 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
           child.position.x = (Math.random() - 0.5) * 60; 
         }
       }
+
+      // Efek Fade In / Fade Out di ujung layar (Y > 30 atau Y < -30)
+      const edgeDist = Math.abs(child.position.y);
+      let currentOpacity = p.opacity;
+      if (edgeDist > 30) {
+        currentOpacity = p.opacity * Math.max(0, 1 - (edgeDist - 30) / 10);
+      }
+      
+      child.traverse((obj: any) => {
+        if (obj.material) {
+          // Khusus untuk Text dari Drei, ada fillOpacity dan outlineOpacity
+          if (obj.material.uniforms && obj.material.uniforms.uFillOpacity !== undefined) {
+             obj.material.fillOpacity = currentOpacity;
+             obj.material.outlineOpacity = currentOpacity;
+          } else {
+             obj.material.opacity = currentOpacity;
+          }
+          obj.material.transparent = true;
+        }
+      });
     });
   });
 
