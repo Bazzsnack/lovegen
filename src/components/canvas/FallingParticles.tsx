@@ -129,9 +129,9 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
       const isText = type === 'text';
       const isHeart = type === 'decoration';
       
-      const rotX = isHeart ? Math.random() * Math.PI : 0;
-      const rotY = isHeart ? Math.random() * Math.PI : 0;
-      const rotZ = isText ? 0 : (Math.random() - 0.5) * 0.4;
+      const rotX = 0; // Hapus 3D tumbling
+      const rotY = 0; // Hapus 3D tumbling
+      const rotZ = isText ? 0 : (Math.random() - 0.5) * 0.4; // Hanya miring 2D
 
       items.push({
         id: `particle-${i}`,
@@ -143,21 +143,21 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
           (Math.random() - 0.5) * 60 - 15 // Kedalaman ekstrem (Z)
         ],
         velocity: [
-          isHeart ? (Math.random() - 0.5) * 0.02 : 0, 
-          isHeart ? (Math.random() * 0.04 + 0.03) : -(Math.random() * 0.05 + 0.07),
+          0, // Tidak ada pergerakan horizontal bawaan
+          -(Math.random() * 0.05 + 0.07), // Semua jatuh ke BAWAH
           0 
         ],
         rotation: [rotX, rotY, rotZ],
         rotationSpeed: [
-          isHeart ? (Math.random() - 0.5) * 0.03 : 0, 
-          isHeart ? (Math.random() - 0.5) * 0.03 : 0, 
-          isHeart ? (Math.random() - 0.5) * 0.02 : 0
+          0, // Tidak ada 3D tumbling
+          0, 
+          0
         ],
         scale: type === 'image' 
-          ? (Math.random() * 2.5 + 1.0) // Foto standar ke besar
+          ? (Math.random() * 5.0 + 3.0) // Foto DIBUAT SANGAT BESAR agar menutupi gap
           : type === 'text' 
-            ? (Math.pow(Math.random(), 2) * 4.0 + 0.6) // Teks: Mayoritas kecil, tapi ada beberapa RAKSASA (depth of field)
-            : (Math.random() * 1.5 + 0.5), // Hati lebih besar seperti kelopak/confetti
+            ? (Math.pow(Math.random(), 2) * 4.0 + 0.6) 
+            : (Math.random() * 1.5 + 0.5), 
         opacity: type === 'image' ? 1.0 : (type === 'text' ? Math.random() * 0.5 + 0.5 : Math.random() * 0.7 + 0.3),
         lifetime: Math.random() * 100, 
         maxY: 50 
@@ -180,19 +180,13 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
       child.position.x += Math.sin(state.clock.elapsedTime * 0.5 + p.lifetime) * swayFactor;
       
       if (p.type === 'decoration') {
-        child.rotation.x += p.rotationSpeed[0];
-        child.rotation.y += p.rotationSpeed[1];
-        child.rotation.z += p.rotationSpeed[2];
-        
-        if (child.position.y > 50) {
-          child.position.y = -50;
-          child.position.x = (Math.random() - 0.5) * 100; 
-        }
-      } else {
-        if (child.position.y < -50) {
-          child.position.y = 50;
-          child.position.x = (Math.random() - 0.5) * 100; 
-        }
+        // Rotasi statis atau ayunan kecil (Sway)
+        child.rotation.z += Math.sin(state.clock.elapsedTime * 0.5 + p.lifetime) * 0.001;
+      }
+      
+      if (child.position.y < -50) {
+        child.position.y = 50;
+        child.position.x = (Math.random() - 0.5) * 100; 
       }
 
       // Efek Fade In / Fade Out di ujung layar (Y > 40 atau Y < -40)
@@ -260,7 +254,7 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
           return (
             <group key={p.id} position={new THREE.Vector3(...p.position)} rotation={new THREE.Euler(...p.rotation)}>
               {/* Efek Glow Putih Halus untuk Hati */}
-              <sprite scale={[p.scale * 3, p.scale * 3, 1]} position={[0, 0, -0.1]}>
+              <sprite scale={[p.scale * 1.8, p.scale * 1.8, 1]} position={[0, 0, -0.1]}>
                 <spriteMaterial 
                   map={glowTexture || undefined} 
                   color="#ffffff" 
