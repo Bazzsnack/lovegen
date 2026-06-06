@@ -12,7 +12,7 @@ interface FallingParticlesProps {
 }
 
 // ------------------------------------------------------------------
-// HEART SHAPE GEOMETRY
+// HEART SHAPE GEOMETRY (Flat 2D for confetti look)
 // ------------------------------------------------------------------
 const createHeartGeometry = () => {
   const shape = new THREE.Shape();
@@ -26,14 +26,7 @@ const createHeartGeometry = () => {
   shape.bezierCurveTo(x + 16, y + 7, x + 16, y, x + 10, y);
   shape.bezierCurveTo(x + 7, y, x + 5, y + 5, x + 5, y + 5);
 
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: 2,
-    bevelEnabled: true,
-    bevelSegments: 2,
-    steps: 1,
-    bevelSize: 1,
-    bevelThickness: 1
-  });
+  const geometry = new THREE.ShapeGeometry(shape);
   
   // Center and normalize scale
   geometry.computeBoundingBox();
@@ -92,8 +85,8 @@ function ImageParticle({ url, position, scale, opacity }: {
 export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
   const groupRef = useRef<THREE.Group>(null);
 
-  // Kurangi jadi 60 agar text dan foto tidak terlalu penuh
-  const totalItems = 60; 
+  // Kepadatan menengah agar terlihat penuh tapi tidak nutupin layar
+  const totalItems = 120; 
 
   const particles = useMemo(() => {
     const items: ParticleState[] = [];
@@ -109,10 +102,10 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
 
       const rand = Math.random();
       
-      // Distribusi: 20% Teks, 15% Gambar, 65% Hati
-      if (rand < 0.20) {
+      // Distribusi: 45% Teks (agar jadi lautan kata), 15% Gambar, 40% Hati
+      if (rand < 0.45) {
         type = 'text';
-      } else if (rand < 0.35 && images.length > 0) {
+      } else if (rand < 0.60 && images.length > 0) {
         type = 'image';
         content = images[Math.floor(Math.random() * images.length)];
       } else {
@@ -131,29 +124,29 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
         type,
         content,
         position: [
-          (Math.random() - 0.5) * 60, // Lebar
-          Math.random() * 80 - 40,    // Tinggi
-          (Math.random() - 0.5) * 50 - 10 // Kedalaman (Z)
+          (Math.random() - 0.5) * 100, // Lebar dibuat sangat luas
+          Math.random() * 100 - 50,    // Tinggi
+          (Math.random() - 0.5) * 60 - 15 // Kedalaman ekstrem (Z)
         ],
         velocity: [
           isHeart ? (Math.random() - 0.5) * 0.02 : 0, 
-          isHeart ? (Math.random() * 0.04 + 0.03) : -(Math.random() * 0.06 + 0.08), // Dipercepat!
+          isHeart ? (Math.random() * 0.04 + 0.03) : -(Math.random() * 0.05 + 0.07),
           0 
         ],
         rotation: [rotX, rotY, rotZ],
         rotationSpeed: [
-          isHeart ? (Math.random() - 0.5) * 0.02 : 0, 
-          isHeart ? (Math.random() - 0.5) * 0.02 : 0, 
-          0
+          isHeart ? (Math.random() - 0.5) * 0.03 : 0, 
+          isHeart ? (Math.random() - 0.5) * 0.03 : 0, 
+          isHeart ? (Math.random() - 0.5) * 0.02 : 0
         ],
         scale: type === 'image' 
-          ? (Math.random() * 2.0 + 1.2) // Foto diperbesar
+          ? (Math.random() * 2.5 + 1.0) // Foto standar ke besar
           : type === 'text' 
-            ? (Math.random() * 1.5 + 1.0) // Teks
-            : (Math.random() * 0.5 + 0.3), // Hati
-        opacity: type === 'image' ? 1.0 : Math.random() * 0.5 + 0.5,
+            ? (Math.pow(Math.random(), 2) * 4.0 + 0.6) // Teks: Mayoritas kecil, tapi ada beberapa RAKSASA (depth of field)
+            : (Math.random() * 1.5 + 0.5), // Hati lebih besar seperti kelopak/confetti
+        opacity: type === 'image' ? 1.0 : (type === 'text' ? Math.random() * 0.5 + 0.5 : Math.random() * 0.7 + 0.3),
         lifetime: Math.random() * 100, 
-        maxY: 40 
+        maxY: 50 
       });
     }
     return items;
@@ -169,29 +162,30 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
 
       child.position.y += p.velocity[1]; 
       
-      const swayFactor = p.type === 'decoration' ? 0.01 : 0.002;
+      const swayFactor = p.type === 'decoration' ? 0.015 : 0.003;
       child.position.x += Math.sin(state.clock.elapsedTime * 0.5 + p.lifetime) * swayFactor;
       
       if (p.type === 'decoration') {
         child.rotation.x += p.rotationSpeed[0];
         child.rotation.y += p.rotationSpeed[1];
+        child.rotation.z += p.rotationSpeed[2];
         
-        if (child.position.y > 40) {
-          child.position.y = -40;
-          child.position.x = (Math.random() - 0.5) * 60; 
+        if (child.position.y > 50) {
+          child.position.y = -50;
+          child.position.x = (Math.random() - 0.5) * 100; 
         }
       } else {
-        if (child.position.y < -40) {
-          child.position.y = 40;
-          child.position.x = (Math.random() - 0.5) * 60; 
+        if (child.position.y < -50) {
+          child.position.y = 50;
+          child.position.x = (Math.random() - 0.5) * 100; 
         }
       }
 
-      // Efek Fade In / Fade Out di ujung layar (Y > 30 atau Y < -30)
+      // Efek Fade In / Fade Out di ujung layar (Y > 40 atau Y < -40)
       const edgeDist = Math.abs(child.position.y);
       let currentOpacity = p.opacity;
-      if (edgeDist > 30) {
-        currentOpacity = p.opacity * Math.max(0, 1 - (edgeDist - 30) / 10);
+      if (edgeDist > 40) {
+        currentOpacity = p.opacity * Math.max(0, 1 - (edgeDist - 40) / 10);
       }
       
       child.traverse((obj: any) => {
@@ -200,11 +194,11 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
           if (obj.textRenderInfo) { 
              // Troika text mesh
              obj.fillOpacity = currentOpacity;
-             obj.outlineOpacity = currentOpacity * 0.8;
+             obj.outlineOpacity = currentOpacity * 0.9;
           } else if (obj.material.uniforms && obj.material.uniforms.uFillOpacity) {
              obj.material.uniforms.uFillOpacity.value = currentOpacity;
              if (obj.material.uniforms.uOutlineOpacity) {
-                obj.material.uniforms.uOutlineOpacity.value = currentOpacity * 0.8;
+                obj.material.uniforms.uOutlineOpacity.value = currentOpacity * 0.9;
              }
           } else {
              obj.material.opacity = currentOpacity;
@@ -235,11 +229,12 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
               <Text 
                 fontSize={p.scale}
                 color="#ffffff"
-                outlineWidth={0.15 * p.scale} // Diperbesar agar glow terlihat
-                outlineBlur={0.4 * p.scale}   // Efek blur neon
+                outlineWidth={0.12 * p.scale} // Outline tebal sebagai base glow
+                outlineBlur={0.8 * p.scale}   // Blur ekstrem untuk menghasilkan awan cahaya (glow)
                 outlineColor={theme?.particleGlow || '#ff66b2'}
-                outlineOpacity={0.8}
+                outlineOpacity={0.9}
                 font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf"
+                fontWeight={600}
                 anchorX="center"
                 anchorY="middle"
                 material-toneMapped={false}
@@ -254,10 +249,11 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
               <mesh geometry={heartGeometry} scale={p.scale}>
                 <meshStandardMaterial 
                   color={theme?.accent || "#ff0000"} 
-                  emissive={theme?.particleGlow || '#ff66b2'}
-                  emissiveIntensity={0.8}
+                  emissive={theme?.accent || '#ff0000'}
+                  emissiveIntensity={0.6}
                   transparent 
                   opacity={p.opacity} 
+                  side={THREE.DoubleSide}
                 />
               </mesh>
             </group>
