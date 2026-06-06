@@ -85,6 +85,20 @@ function ImageParticle({ url, position, scale, opacity }: {
 export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
   const groupRef = useRef<THREE.Group>(null);
 
+  const glowTexture = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    const canvas = document.createElement('canvas');
+    canvas.width = 64; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gradient.addColorStop(0, 'rgba(255,255,255,1)');
+    gradient.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(canvas);
+  }, []);
+
   // Kepadatan menengah agar terlihat penuh tapi tidak nutupin layar
   const totalItems = 120; 
 
@@ -229,10 +243,10 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
               <Text 
                 fontSize={p.scale}
                 color="#ffffff"
-                outlineWidth={0.02 * p.scale} // Tipiskan outline dasar agar tidak kaku
-                outlineBlur={0.6 * p.scale}   // Pertahankan blur agar soft dan lembut
+                outlineWidth={0} // Hapus outline dasar agar murni efek shadow/glow lembut
+                outlineBlur={0.5 * p.scale} // Efek glow yang sangat soft
                 outlineColor={theme?.particleGlow || '#ff66b2'}
-                outlineOpacity={0.9}
+                outlineOpacity={1}
                 font="/font/sweet_apricot.ttf"
                 anchorX="center"
                 anchorY="middle"
@@ -245,17 +259,17 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
         } else {
           return (
             <group key={p.id} position={new THREE.Vector3(...p.position)} rotation={new THREE.Euler(...p.rotation)}>
-              {/* Efek Glow Putih untuk Hati */}
-              <mesh position={[0, 0, -0.1]}>
-                <circleGeometry args={[0.8 * p.scale, 16]} />
-                <meshBasicMaterial 
+              {/* Efek Glow Putih Halus untuk Hati */}
+              <sprite scale={[p.scale * 3, p.scale * 3, 1]} position={[0, 0, -0.1]}>
+                <spriteMaterial 
+                  map={glowTexture || undefined} 
                   color="#ffffff" 
                   transparent 
-                  opacity={p.opacity * 0.4} 
+                  opacity={p.opacity * 0.6} 
                   blending={THREE.AdditiveBlending}
                   depthWrite={false}
                 />
-              </mesh>
+              </sprite>
               
               <mesh geometry={heartGeometry} scale={p.scale}>
                 <meshStandardMaterial 

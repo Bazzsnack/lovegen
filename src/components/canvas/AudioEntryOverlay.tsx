@@ -8,10 +8,11 @@ import { Button } from '../ui/Button';
 interface AudioEntryOverlayProps {
   title: string;
   audioUrl?: string | null;
+  headphoneText?: string | null;
   onEnter?: () => void;
 }
 
-export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverlayProps) {
+export function AudioEntryOverlay({ title, audioUrl, headphoneText, onEnter }: AudioEntryOverlayProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -71,7 +72,7 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
                 {title}
               </h1>
               <p className="text-white/80 mb-10 text-lg">
-                Put on your headphones for the best experience.
+                {headphoneText || "Put on your headphones for the best experience."}
               </p>
               
               <Button 
@@ -81,7 +82,7 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
                 className="group gap-3 px-8 shadow-2xl shadow-love-500/20"
               >
                 <Play size={20} className="group-hover:scale-110 transition-transform" fill="currentColor" />
-                <span>Enter Experience</span>
+                <span>Pencet dong</span>
               </Button>
             </motion.div>
           </motion.div>
@@ -109,7 +110,7 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
             {/* Animated ring when playing */}
             {isPlaying && (
               <motion.div
-                className="absolute inset-0 rounded-full border-2 border-love-400/50"
+                className="absolute inset-0 rounded-full border-2 border-love-400/50 pointer-events-none"
                 animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               />

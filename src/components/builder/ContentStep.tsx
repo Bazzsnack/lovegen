@@ -7,6 +7,7 @@ interface ContentStepProps {
   data: {
     title: string;
     subtitle: string;
+    headphoneText?: string;
   };
   onChange: (data: Partial<ContentStepProps['data']>) => void;
 }
@@ -40,6 +41,18 @@ export function ContentStep({ data, onChange }: ContentStepProps) {
             value={data.subtitle}
             onChange={(e) => onChange({ subtitle: e.target.value })}
             placeholder="Contoh: Aku cinta kamu selamanya ❤️"
+            className="h-14 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-2 text-lg text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-love-400 placeholder:text-white/20"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-white/90">Pesan Awal (Opsional)</label>
+          <p className="text-xs text-white/40 mb-1">Teks sebelum masuk. Default: "Put on your headphones for the best experience."</p>
+          <input
+            type="text"
+            value={data.headphoneText}
+            onChange={(e) => onChange({ headphoneText: e.target.value })}
+            placeholder="Contoh: Pakai headset ya biar makin baper!"
             className="h-14 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-2 text-lg text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-love-400 placeholder:text-white/20"
           />
         </div>

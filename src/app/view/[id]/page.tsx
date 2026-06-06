@@ -49,6 +49,7 @@ export default async function PublishedPage({
       <AudioEntryOverlay 
         title={typedPageData.title} 
         audioUrl={typedPageData.audio_url}
+        headphoneText={typedPageData.phrases?.[0]}
       />
       
       <div className="absolute inset-0 z-0">
