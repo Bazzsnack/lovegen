@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description: "Create your beautiful, romantic 3D micro-site with Lovegen.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://loveegen.vercel.app'),
   openGraph: {
-    images: ['/logo_web.png'],
+    images: ['/og-preview.png'],
   },
 };
 
