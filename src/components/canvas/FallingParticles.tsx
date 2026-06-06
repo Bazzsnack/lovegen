@@ -196,10 +196,16 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
       
       child.traverse((obj: any) => {
         if (obj.material) {
-          // Khusus untuk Text dari Drei, ada fillOpacity dan outlineOpacity
-          if (obj.material.uniforms && obj.material.uniforms.uFillOpacity !== undefined) {
-             obj.material.fillOpacity = currentOpacity;
-             obj.material.outlineOpacity = currentOpacity;
+          // Khusus untuk Text dari Drei, materialnya custom
+          if (obj.textRenderInfo) { 
+             // Troika text mesh
+             obj.fillOpacity = currentOpacity;
+             obj.outlineOpacity = currentOpacity * 0.8;
+          } else if (obj.material.uniforms && obj.material.uniforms.uFillOpacity) {
+             obj.material.uniforms.uFillOpacity.value = currentOpacity;
+             if (obj.material.uniforms.uOutlineOpacity) {
+                obj.material.uniforms.uOutlineOpacity.value = currentOpacity * 0.8;
+             }
           } else {
              obj.material.opacity = currentOpacity;
           }
@@ -229,9 +235,10 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
               <Text 
                 fontSize={p.scale}
                 color="#ffffff"
-                outlineWidth={0.05 * p.scale}
-                outlineBlur={0.2 * p.scale}
+                outlineWidth={0.15 * p.scale} // Diperbesar agar glow terlihat
+                outlineBlur={0.4 * p.scale}   // Efek blur neon
                 outlineColor={theme?.particleGlow || '#ff66b2'}
+                outlineOpacity={0.8}
                 font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf"
                 anchorX="center"
                 anchorY="middle"
