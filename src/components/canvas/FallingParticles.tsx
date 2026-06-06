@@ -229,8 +229,8 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
               <Text 
                 fontSize={p.scale}
                 color="#ffffff"
-                outlineWidth={0.12 * p.scale} // Outline tebal sebagai base glow
-                outlineBlur={0.8 * p.scale}   // Blur ekstrem untuk menghasilkan awan cahaya (glow)
+                outlineWidth={0.02 * p.scale} // Tipiskan outline dasar agar tidak kaku
+                outlineBlur={0.6 * p.scale}   // Pertahankan blur agar soft dan lembut
                 outlineColor={theme?.particleGlow || '#ff66b2'}
                 outlineOpacity={0.9}
                 font="/font/sweet_apricot.ttf"
@@ -245,6 +245,18 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
         } else {
           return (
             <group key={p.id} position={new THREE.Vector3(...p.position)} rotation={new THREE.Euler(...p.rotation)}>
+              {/* Efek Glow Putih untuk Hati */}
+              <mesh position={[0, 0, -0.1]}>
+                <circleGeometry args={[0.8 * p.scale, 16]} />
+                <meshBasicMaterial 
+                  color="#ffffff" 
+                  transparent 
+                  opacity={p.opacity * 0.4} 
+                  blending={THREE.AdditiveBlending}
+                  depthWrite={false}
+                />
+              </mesh>
+              
               <mesh geometry={heartGeometry} scale={p.scale}>
                 <meshStandardMaterial 
                   color={theme?.accent || "#ff0000"} 
