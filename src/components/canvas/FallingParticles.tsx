@@ -233,8 +233,7 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
                 outlineBlur={0.8 * p.scale}   // Blur ekstrem untuk menghasilkan awan cahaya (glow)
                 outlineColor={theme?.particleGlow || '#ff66b2'}
                 outlineOpacity={0.9}
-                font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf"
-                fontWeight={600}
+                font="/font/nabana.ttf"
                 anchorX="center"
                 anchorY="middle"
                 material-toneMapped={false}
