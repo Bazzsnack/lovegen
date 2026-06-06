@@ -23,7 +23,6 @@ export function BuilderWizard() {
   const [formData, setFormData] = useState({
     title: '',
     subtitle: '',
-    headphoneText: '',
     theme: 'rose-petal',
     particleSpeed: 'medium',
     particleDensity: 'normal',

@@ -8,11 +8,10 @@ import { Button } from '../ui/Button';
 interface AudioEntryOverlayProps {
   title: string;
   audioUrl?: string | null;
-  headphoneText?: string | null;
   onEnter?: () => void;
 }
 
-export function AudioEntryOverlay({ title, audioUrl, headphoneText, onEnter }: AudioEntryOverlayProps) {
+export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverlayProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -68,18 +67,15 @@ export function AudioEntryOverlay({ title, audioUrl, headphoneText, onEnter }: A
               transition={{ delay: 0.2, duration: 0.8 }}
               className="flex flex-col items-center text-center p-8 max-w-md"
             >
-              <h1 className="text-4xl md:text-5xl font-display font-medium text-white mb-6 drop-shadow-lg">
+              <h1 className="text-4xl md:text-5xl font-display font-medium text-white mb-10 drop-shadow-lg">
                 {title}
               </h1>
-              <p className="text-white/80 mb-10 text-lg">
-                {headphoneText || "Put on your headphones for the best experience."}
-              </p>
               
               <Button 
                 variant="primary" 
                 size="lg" 
                 onClick={handleEnter}
-                className="group gap-3 px-8 shadow-2xl shadow-love-500/20"
+                className="group gap-3 px-8 shadow-2xl shadow-white/30"
               >
                 <Play size={20} className="group-hover:scale-110 transition-transform" fill="currentColor" />
                 <span>Pencet dong</span>

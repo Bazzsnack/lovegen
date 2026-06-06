@@ -154,7 +154,7 @@ export function FallingParticles({ pageData, theme }: FallingParticlesProps) {
           0
         ],
         scale: type === 'image' 
-          ? (Math.random() * 5.0 + 3.0) // Foto DIBUAT SANGAT BESAR agar menutupi gap
+          ? (Math.random() * 2.5 + 1.2) // Ukuran foto sedang yang lebih pas dan elegan
           : type === 'text' 
             ? (Math.pow(Math.random(), 2) * 4.0 + 0.6) 
             : (Math.random() * 1.5 + 0.5), 

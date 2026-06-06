@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       .insert({
         title: formData.title || 'Untitled',
         subtitle: formData.subtitle || null,
-        phrases: formData.headphoneText ? [formData.headphoneText] : [],
+        phrases: formData.subtitle ? [formData.subtitle] : [],
         theme: formData.theme || 'rose-petal',
         particle_speed: formData.particleSpeed || 'medium',
         particle_density: formData.particleDensity || 'normal',
