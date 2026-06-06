@@ -7,6 +7,20 @@ import { PageConfig } from '@/lib/types';
 
 export const revalidate = 60; // Cache for 60 seconds
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const supabase = await createServerClient();
+  const { data } = await supabase.from('pages').select('title, subtitle').eq('id', id).single();
+  
+  const title = data?.title || 'Lovegen Micro-site';
+  const description = data?.subtitle || 'A special 3D experience just for you.';
+  
+  return {
+    title: title,
+    description: description,
+  };
+}
+
 export default async function PublishedPage({
   params,
 }: {

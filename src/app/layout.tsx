@@ -20,6 +20,7 @@ const dancingScript = Dancing_Script({
 export const metadata: Metadata = {
   title: "Lovegen - Romance Micro-site Builder",
   description: "Create your beautiful, romantic 3D micro-site with Lovegen.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://loveegen.vercel.app'),
 };
 
 export default function RootLayout({
