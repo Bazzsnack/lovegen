@@ -41,28 +41,28 @@ export function PublishStep({ data }: PublishStepProps) {
       qrRef.current.innerHTML = '';
       
       qrCodeInstance.current = new QRCodeStyling({
-        width: 300,
-        height: 300,
+        width: 260,
+        height: 260,
         data: publishedUrl,
-        margin: 10,
+        margin: 0,
         qrOptions: {
           typeNumber: 0,
           mode: 'Byte' as any,
           errorCorrectionLevel: 'H'
         },
         dotsOptions: {
-          color: '#e84393',
+          color: '#ff2a5f',
           type: 'rounded' as any
         },
         backgroundOptions: {
-          color: '#ffffff',
+          color: '#111111',
         },
         cornersSquareOptions: {
-          color: '#e84393',
+          color: '#ff2a5f',
           type: 'extra-rounded' as any
         },
         cornersDotOptions: {
-          color: '#d63384',
+          color: '#ff2a5f',
           type: 'dot' as any
         },
         imageOptions: {
@@ -193,18 +193,28 @@ export function PublishStep({ data }: PublishStepProps) {
         {/* Styled QR Code Wrapper for Download */}
         <div 
           ref={qrWrapperRef}
-          className="relative bg-white rounded-2xl shadow-2xl shadow-love-500/10 overflow-hidden inline-block"
+          className="relative bg-[#111111] rounded-2xl border-[3px] border-emerald-500/80 shadow-[0_0_40px_-10px_rgba(46,139,87,0.4)] overflow-hidden inline-flex items-center justify-center w-[320px] h-[320px]"
         >
-          {/* Ribbon Decoration */}
-          <div className="absolute top-0 right-0 w-24 h-24 pointer-events-none overflow-hidden z-10">
-            <div className="absolute -right-7 top-5 w-32 h-6 bg-love-500 rotate-45 shadow-sm flex items-center justify-center">
-              <span className="text-[10px] text-white font-bold tracking-widest uppercase leading-none">For You</span>
-            </div>
-            {/* Little bow effect */}
-            <div className="absolute right-4 top-3 w-3 h-3 bg-love-600 rounded-full shadow-inner z-20"></div>
+          {/* Top-Left Red Bow (SVG) */}
+          <div className="absolute -top-1 -left-2 w-28 h-28 pointer-events-none z-10 text-[#ff2a5f] drop-shadow-xl" style={{ filter: 'drop-shadow(0px 4px 6px rgba(0,0,0,0.5))' }}>
+            <svg viewBox="0 0 100 100" fill="currentColor">
+              {/* Left loop */}
+              <path d="M 50 50 C 0 20, 10 80, 50 50 Z" />
+              {/* Right loop */}
+              <path d="M 50 50 C 100 20, 90 80, 50 50 Z" />
+              {/* Center knot */}
+              <circle cx="50" cy="50" r="10" />
+              {/* Left tail */}
+              <path d="M 45 55 L 15 95 L 35 95 L 50 60 Z" />
+              {/* Right tail */}
+              <path d="M 55 55 L 85 95 L 65 95 L 50 60 Z" />
+            </svg>
           </div>
+
+          {/* Bottom-Right Ribbon Stripe */}
+          <div className="absolute -bottom-10 -right-10 w-48 h-8 bg-[#ff2a5f] -rotate-45 shadow-sm z-10"></div>
           
-          <div className="p-6 relative z-0">
+          <div className="relative z-0">
             <div ref={qrRef} />
           </div>
         </div>
