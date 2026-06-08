@@ -51,18 +51,18 @@ export function PublishStep({ data }: PublishStepProps) {
           errorCorrectionLevel: 'H'
         },
         dotsOptions: {
-          color: '#ff2a5f',
+          color: '#ff1e46',
           type: 'rounded' as any
         },
         backgroundOptions: {
-          color: '#111111',
+          color: '#1a1a1a',
         },
         cornersSquareOptions: {
-          color: '#ff2a5f',
+          color: '#ff1e46',
           type: 'extra-rounded' as any
         },
         cornersDotOptions: {
-          color: '#ff2a5f',
+          color: '#ff1e46',
           type: 'dot' as any
         },
         imageOptions: {
@@ -190,32 +190,62 @@ export function PublishStep({ data }: PublishStepProps) {
           </a>
         </div>
 
-        {/* Styled QR Code Wrapper for Download */}
+        {/* Outer Capture Wrapper for html-to-image to capture overflowing elements */}
         <div 
           ref={qrWrapperRef}
-          className="relative bg-[#111111] rounded-2xl border-[3px] border-emerald-500/80 shadow-[0_0_40px_-10px_rgba(46,139,87,0.4)] overflow-hidden inline-flex items-center justify-center w-[320px] h-[320px]"
+          className="relative bg-[#111111] w-[400px] h-[400px] flex items-center justify-center overflow-hidden inline-flex rounded-xl"
         >
-          {/* Top-Left Red Bow (SVG) */}
-          <div className="absolute -top-1 -left-2 w-28 h-28 pointer-events-none z-10 text-[#ff2a5f] drop-shadow-xl" style={{ filter: 'drop-shadow(0px 4px 6px rgba(0,0,0,0.5))' }}>
-            <svg viewBox="0 0 100 100" fill="currentColor">
-              {/* Left loop */}
-              <path d="M 50 50 C 0 20, 10 80, 50 50 Z" />
-              {/* Right loop */}
-              <path d="M 50 50 C 100 20, 90 80, 50 50 Z" />
-              {/* Center knot */}
-              <circle cx="50" cy="50" r="10" />
-              {/* Left tail */}
-              <path d="M 45 55 L 15 95 L 35 95 L 50 60 Z" />
-              {/* Right tail */}
-              <path d="M 55 55 L 85 95 L 65 95 L 50 60 Z" />
-            </svg>
-          </div>
+          {/* Inner Chat Bubble Simulator */}
+          <div className="relative w-[300px] h-[300px] bg-[#1a1a1a] rounded-[2rem] border-[3px] border-emerald-500/80 shadow-[0_0_40px_-10px_rgba(46,139,87,0.4)] flex items-center justify-center">
+            
+            {/* Top-Left 3D Bow Overlay */}
+            <div className="absolute -top-12 -left-12 w-48 h-48 pointer-events-none z-20">
+              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="bowGloss" cx="40%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#ff9eb1"/>
+                    <stop offset="40%" stop-color="#ff1e46"/>
+                    <stop offset="100%" stop-color="#a0001d"/>
+                  </radialGradient>
+                  <linearGradient id="ribbonShade" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ff1e46"/>
+                    <stop offset="50%" stop-color="#d00024"/>
+                    <stop offset="100%" stop-color="#700010"/>
+                  </linearGradient>
+                  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="5" dy="10" stdDeviation="6" floodColor="#000" floodOpacity="0.8"/>
+                  </filter>
+                </defs>
 
-          {/* Bottom-Right Ribbon Stripe */}
-          <div className="absolute -bottom-10 -right-10 w-48 h-8 bg-[#ff2a5f] -rotate-45 shadow-sm z-10"></div>
-          
-          <div className="relative z-0">
-            <div ref={qrRef} />
+                <g filter="url(#shadow)">
+                  {/* Left Tail */}
+                  <path d="M 100 110 L 30 185 C 50 195, 70 185, 90 150 C 95 135, 98 120, 100 110 Z" fill="url(#ribbonShade)"/>
+                  {/* Right Tail */}
+                  <path d="M 100 110 L 170 185 C 150 195, 130 185, 110 150 C 105 135, 102 120, 100 110 Z" fill="url(#ribbonShade)"/>
+                  
+                  {/* Left Loop */}
+                  <path d="M 100 100 C 0 20, -20 140, 80 120 C 90 115, 95 110, 100 100 Z" fill="url(#bowGloss)"/>
+                  {/* Right Loop */}
+                  <path d="M 100 100 C 200 20, 220 140, 120 120 C 110 115, 105 110, 100 100 Z" fill="url(#bowGloss)"/>
+                  
+                  {/* Center Knot */}
+                  <rect x="80" y="82" width="40" height="45" rx="15" fill="url(#bowGloss)"/>
+                  {/* Knot highlight */}
+                  <path d="M 85 90 Q 100 80 115 90" stroke="#ff9eb1" strokeWidth="4" strokeLinecap="round"/>
+                </g>
+              </svg>
+            </div>
+
+            {/* Bottom-Right Ribbon Wrapping Effect */}
+            <div className="absolute -bottom-1 -right-1 w-32 h-32 overflow-hidden z-20 rounded-br-[1.8rem] pointer-events-none">
+              <div className="absolute top-16 -left-4 w-48 h-10 bg-gradient-to-b from-[#ff9eb1] via-[#ff1e46] to-[#a0001d] -rotate-45 shadow-[0_-4px_15px_rgba(0,0,0,0.6)] border-t border-[#ff9eb1]/50">
+              </div>
+            </div>
+
+            <div className="relative z-0" style={{ transform: 'scale(1.05)' }}>
+              <div ref={qrRef} />
+            </div>
+
           </div>
         </div>
         <p className="text-xs text-white/40">Scan QR code ini untuk langsung membuka halaman</p>
