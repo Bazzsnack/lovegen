@@ -41,8 +41,8 @@ export function PublishStep({ data }: PublishStepProps) {
       qrRef.current.innerHTML = '';
       
       qrCodeInstance.current = new QRCodeStyling({
-        width: 260,
-        height: 260,
+        width: 200,
+        height: 200,
         data: publishedUrl,
         margin: 0,
         qrOptions: {
@@ -196,10 +196,10 @@ export function PublishStep({ data }: PublishStepProps) {
           className="relative bg-[#111111] w-[400px] h-[400px] flex items-center justify-center overflow-hidden inline-flex rounded-xl"
         >
           {/* Inner Chat Bubble Simulator */}
-          <div className="relative w-[300px] h-[300px] bg-[#1a1a1a] rounded-[2rem] border-[3px] border-emerald-500/80 shadow-[0_0_40px_-10px_rgba(46,139,87,0.4)] flex items-center justify-center">
+          <div className="relative w-[320px] h-[320px] bg-[#1a1a1a] rounded-[2rem] border-[3px] border-emerald-500/80 shadow-[0_0_40px_-10px_rgba(46,139,87,0.4)] flex items-center justify-center">
             
-            {/* Top-Left 3D Bow Overlay */}
-            <div className="absolute -top-12 -left-12 w-48 h-48 pointer-events-none z-20">
+            {/* Top-Left 3D Bow Overlay - Sized down to prevent covering QR */}
+            <div className="absolute -top-6 -left-6 w-28 h-28 pointer-events-none z-20">
               <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <radialGradient id="bowGloss" cx="40%" cy="30%" r="70%">
@@ -213,7 +213,7 @@ export function PublishStep({ data }: PublishStepProps) {
                     <stop offset="100%" stop-color="#700010"/>
                   </linearGradient>
                   <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="5" dy="10" stdDeviation="6" floodColor="#000" floodOpacity="0.8"/>
+                    <feDropShadow dx="4" dy="8" stdDeviation="5" floodColor="#000" floodOpacity="0.8"/>
                   </filter>
                 </defs>
 
@@ -237,12 +237,12 @@ export function PublishStep({ data }: PublishStepProps) {
             </div>
 
             {/* Bottom-Right Ribbon Wrapping Effect */}
-            <div className="absolute -bottom-1 -right-1 w-32 h-32 overflow-hidden z-20 rounded-br-[1.8rem] pointer-events-none">
-              <div className="absolute top-16 -left-4 w-48 h-10 bg-gradient-to-b from-[#ff9eb1] via-[#ff1e46] to-[#a0001d] -rotate-45 shadow-[0_-4px_15px_rgba(0,0,0,0.6)] border-t border-[#ff9eb1]/50">
+            <div className="absolute -bottom-1 -right-1 w-24 h-24 overflow-hidden z-20 rounded-br-[1.8rem] pointer-events-none">
+              <div className="absolute top-10 -left-6 w-40 h-8 bg-gradient-to-b from-[#ff9eb1] via-[#ff1e46] to-[#a0001d] -rotate-45 shadow-[0_-4px_15px_rgba(0,0,0,0.6)] border-t border-[#ff9eb1]/50">
               </div>
             </div>
 
-            <div className="relative z-0" style={{ transform: 'scale(1.05)' }}>
+            <div className="relative z-0">
               <div ref={qrRef} />
             </div>
 
