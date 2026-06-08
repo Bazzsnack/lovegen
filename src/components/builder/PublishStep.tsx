@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '../ui/Button';
 import { CheckCircle2, Globe, Loader2, AlertCircle, Download, ExternalLink, Copy, Check } from 'lucide-react';
 // import { publishPage } from '@/app/actions/publish';
+import { toPng } from 'html-to-image';
 import QRCodeStyling from 'qr-code-styling';
 
 interface PublishStepProps {
@@ -21,6 +22,7 @@ export function PublishStep({ data }: PublishStepProps) {
   const [publishedUrl, setPublishedUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const qrRef = useRef<HTMLDivElement>(null);
+  const qrWrapperRef = useRef<HTMLDivElement>(null);
   const qrCodeInstance = useRef<QRCodeStyling | null>(null);
 
   const checkSlug = (val: string) => {
@@ -73,12 +75,20 @@ export function PublishStep({ data }: PublishStepProps) {
     }
   }, [publishedUrl]);
 
-  const handleDownloadQR = () => {
-    if (qrCodeInstance.current) {
-      qrCodeInstance.current.download({
-        name: `qr-${slug}`,
-        extension: 'png'
-      });
+  const handleDownloadQR = async () => {
+    if (!qrWrapperRef.current) return;
+    try {
+      const dataUrl = await toPng(qrWrapperRef.current, { cacheBust: true, pixelRatio: 2 });
+      const link = document.createElement('a');
+      link.download = `lovegen-qr-${slug}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Failed to generate image', err);
+      // Fallback
+      if (qrCodeInstance.current) {
+        qrCodeInstance.current.download({ name: `qr-${slug}`, extension: 'png' });
+      }
     }
   };
 
@@ -180,9 +190,23 @@ export function PublishStep({ data }: PublishStepProps) {
           </a>
         </div>
 
-        {/* QR Code */}
-        <div className="p-6 bg-white rounded-2xl shadow-2xl shadow-love-500/10">
-          <div ref={qrRef} />
+        {/* Styled QR Code Wrapper for Download */}
+        <div 
+          ref={qrWrapperRef}
+          className="relative bg-white rounded-2xl shadow-2xl shadow-love-500/10 overflow-hidden inline-block"
+        >
+          {/* Ribbon Decoration */}
+          <div className="absolute top-0 right-0 w-24 h-24 pointer-events-none overflow-hidden z-10">
+            <div className="absolute -right-7 top-5 w-32 h-6 bg-love-500 rotate-45 shadow-sm flex items-center justify-center">
+              <span className="text-[10px] text-white font-bold tracking-widest uppercase leading-none">For You</span>
+            </div>
+            {/* Little bow effect */}
+            <div className="absolute right-4 top-3 w-3 h-3 bg-love-600 rounded-full shadow-inner z-20"></div>
+          </div>
+          
+          <div className="p-6 relative z-0">
+            <div ref={qrRef} />
+          </div>
         </div>
         <p className="text-xs text-white/40">Scan QR code ini untuk langsung membuka halaman</p>
 
