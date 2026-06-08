@@ -195,9 +195,47 @@ export function PublishStep({ data }: PublishStepProps) {
           ref={qrWrapperRef}
           className="relative bg-[#111111] w-[320px] h-[320px] rounded-[2rem] flex items-center justify-center overflow-hidden inline-flex shadow-2xl"
         >
-          {/* Top-Left Ribbon Wrapping Effect */}
-          <div className="absolute -top-1 -left-1 w-24 h-24 overflow-hidden z-20 pointer-events-none rounded-tl-[1.8rem]">
+          {/* Top-Left 3D Bow with Diagonal Ribbon */}
+          <div className="absolute -top-1 -left-1 w-24 h-24 overflow-hidden z-20 pointer-events-none rounded-tl-[1.8rem] flex items-center justify-center">
+            {/* The diagonal ribbon stripe behind the bow */}
             <div className="absolute top-4 -left-8 w-40 h-8 bg-gradient-to-t from-[#ff9eb1] via-[#ff1e46] to-[#a0001d] -rotate-45 shadow-[0_4px_15px_rgba(0,0,0,0.6)] border-b border-[#ff9eb1]/50">
+            </div>
+            {/* The Bow on top, rotated to match the slant */}
+            <div className="absolute top-0 left-0 w-full h-full -rotate-45 flex items-center justify-center">
+              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-20 -mt-6 drop-shadow-2xl">
+                <defs>
+                  <radialGradient id="bowGloss" cx="40%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#ff9eb1"/>
+                    <stop offset="40%" stop-color="#ff1e46"/>
+                    <stop offset="100%" stop-color="#a0001d"/>
+                  </radialGradient>
+                  <linearGradient id="ribbonShade" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ff1e46"/>
+                    <stop offset="50%" stop-color="#d00024"/>
+                    <stop offset="100%" stop-color="#700010"/>
+                  </linearGradient>
+                  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="6" stdDeviation="4" floodColor="#000" floodOpacity="0.8"/>
+                  </filter>
+                </defs>
+
+                <g filter="url(#shadow)">
+                  {/* Left Tail */}
+                  <path d="M 100 110 L 30 185 C 50 195, 70 185, 90 150 C 95 135, 98 120, 100 110 Z" fill="url(#ribbonShade)"/>
+                  {/* Right Tail */}
+                  <path d="M 100 110 L 170 185 C 150 195, 130 185, 110 150 C 105 135, 102 120, 100 110 Z" fill="url(#ribbonShade)"/>
+                  
+                  {/* Left Loop */}
+                  <path d="M 100 100 C 0 20, -20 140, 80 120 C 90 115, 95 110, 100 100 Z" fill="url(#bowGloss)"/>
+                  {/* Right Loop */}
+                  <path d="M 100 100 C 200 20, 220 140, 120 120 C 110 115, 105 110, 100 100 Z" fill="url(#bowGloss)"/>
+                  
+                  {/* Center Knot */}
+                  <rect x="80" y="82" width="40" height="45" rx="15" fill="url(#bowGloss)"/>
+                  {/* Knot highlight */}
+                  <path d="M 85 90 Q 100 80 115 90" stroke="#ff9eb1" strokeWidth="4" strokeLinecap="round"/>
+                </g>
+              </svg>
             </div>
           </div>
 
