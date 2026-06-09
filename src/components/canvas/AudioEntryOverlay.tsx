@@ -76,13 +76,13 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
             <motion.div 
               animate={{ y: [0, -15, 0] }}
               transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-              className="flex flex-col items-center gap-6 cursor-pointer relative"
+              className="flex flex-col items-center cursor-pointer relative"
               onClick={() => setIntroState('dialog')}
             >
               {/* Box Container */}
               <div className="relative w-48 h-48 flex items-center justify-center">
                 {/* Glow */}
-                <div className="absolute inset-0 bg-love-500/30 rounded-full blur-3xl opacity-60 animate-pulse" />
+                <div className="absolute -inset-12 bg-love-500/20 rounded-full blur-[50px] opacity-80 animate-pulse pointer-events-none" />
                 
                 {/* 3D SVG Gift Box */}
                 <svg viewBox="0 0 200 200" className="w-full h-full relative z-10 overflow-visible drop-shadow-2xl">
@@ -111,8 +111,8 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
                       <stop offset="0%" stopColor="#fef9c3"/>
                       <stop offset="100%" stopColor="#eab308"/>
                     </linearGradient>
-                    <filter id="boxShadow" x="-20%" y="-20%" width="140%" height="140%">
-                      <feDropShadow dx="0" dy="15" stdDeviation="15" floodColor="#e11d48" floodOpacity="0.5"/>
+                    <filter id="boxShadow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feDropShadow dx="0" dy="15" stdDeviation="20" floodColor="#e11d48" floodOpacity="0.6"/>
                     </filter>
                   </defs>
 
@@ -149,7 +149,7 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
               <motion.p 
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="text-white/90 font-medium tracking-widest uppercase text-sm mt-4 drop-shadow-lg"
+                className="text-white/90 font-medium tracking-widest uppercase text-sm -mt-4 drop-shadow-lg"
               >
                 Tap to Open
               </motion.p>
