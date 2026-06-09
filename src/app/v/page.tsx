@@ -26,14 +26,26 @@ function StatelessViewer() {
       if (!decodedStr) throw new Error('Decompression failed');
       const parsed = JSON.parse(decodedStr);
       
-      // Reconstruct payload to internal schema
+      // Reconstruct payload to match PageConfig schema (snake_case fields)
       setData({
+        id: 'stateless',
+        user_id: '',
         title: parsed.t || '',
         subtitle: parsed.s || '',
-        images: parsed.i ? [parsed.i] : [],
-        audioUrl: parsed.a || '',
-        theme: parsed.th || 'stars',
-        particleDensity: parsed.p || 50
+        phrases: [],
+        theme: parsed.th || 'rose-petal',
+        particle_speed: 'medium',
+        particle_density: 'normal',
+        font_pairing: 'default',
+        image_urls: parsed.i ? [parsed.i] : [],
+        audio_url: parsed.a || null,
+        audio_filename: null,
+        qr_config: { dotStyle: 'rounded', cornerStyle: 'extra-rounded', fgColor: '#ff1e46', bgColor: '#1a1a1a' },
+        is_published: true,
+        published_at: null,
+        view_count: 0,
+        created_at: '',
+        updated_at: '',
       });
     } catch (e) {
       console.error("Base64 decode error", e);
@@ -65,7 +77,7 @@ function StatelessViewer() {
       {!hasEntered && (
         <AudioEntryOverlay 
           title={data.title}
-          audioUrl={data.audioUrl} 
+          audioUrl={data.audio_url} 
           onEnter={() => setHasEntered(true)} 
         />
       )}
