@@ -21,19 +21,7 @@ export function ContentStep({ data, onChange }: ContentStepProps) {
 
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-white/90">Headline</label>
-          <p className="text-xs text-white/40 mb-1">Teks besar yang muncul pertama kali saat halaman dibuka.</p>
-          <input
-            type="text"
-            value={data.title}
-            onChange={(e) => onChange({ title: e.target.value })}
-            placeholder="Contoh: Happy Birthday Sayang 💕"
-            className="h-14 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-2 text-lg text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-love-400 placeholder:text-white/20"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-white/90">Subtitle</label>
+          <label className="text-sm font-medium text-white/90">Pesan (Teks Berjatuhan)</label>
           <p className="text-xs text-white/40 mb-1">Satu kalimat pendek yang akan ikut berjatuhan bersama fotomu.</p>
           <input
             type="text"
@@ -43,7 +31,6 @@ export function ContentStep({ data, onChange }: ContentStepProps) {
             className="h-14 w-full rounded-xl border border-white/20 bg-black/40 px-4 py-2 text-lg text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-love-400 placeholder:text-white/20"
           />
         </div>
-
       </div>
 
     </div>
