@@ -70,8 +70,7 @@ function StatelessViewer() {
       
       {/* Preload SceneCanvas but don't show text/animations until entered */}
       <SceneCanvas 
-        data={data} 
-        isEntered={hasEntered} 
+        pageData={data} 
       />
     </div>
   );
