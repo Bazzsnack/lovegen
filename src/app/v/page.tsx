@@ -74,15 +74,14 @@ function StatelessViewer() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
-      {!hasEntered && (
-        <AudioEntryOverlay 
-          title={data.title}
-          audioUrl={data.audio_url} 
-          onEnter={() => setHasEntered(true)} 
-        />
-      )}
+      {/* AudioEntryOverlay must stay mounted to keep audio alive and show play/pause control */}
+      <AudioEntryOverlay 
+        title={data.title}
+        audioUrl={data.audio_url} 
+        onEnter={() => setHasEntered(true)} 
+      />
       
-      {/* Preload SceneCanvas but don't show text/animations until entered */}
+      {/* SceneCanvas always renders behind the overlay */}
       <SceneCanvas 
         pageData={data} 
       />
