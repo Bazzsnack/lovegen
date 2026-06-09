@@ -173,7 +173,7 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
               className="flex flex-col items-center text-center p-8 max-w-sm mx-4 bg-white/10 border border-white/20 rounded-3xl backdrop-blur-lg shadow-2xl"
             >
               <h1 className="text-2xl md:text-3xl font-display font-medium text-white mb-8 drop-shadow-lg leading-tight">
-                Mau lihat orang paling spesial di duniaku?
+                {title || 'Mau lihat orang paling spesial di duniaku?'}
               </h1>
               
               <div className="flex flex-col gap-4 w-full relative">
@@ -181,9 +181,9 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
                   variant="primary" 
                   size="lg" 
                   onClick={handleEnter}
-                  className="w-full shadow-lg shadow-love-500/30 py-6 text-lg"
+                  className="w-full shadow-lg shadow-love-500/30 py-6 text-lg font-medium tracking-wide"
                 >
-                  Tentu saja 😍
+                  Of Course 😳
                 </Button>
                 
                 <div className="relative h-14 w-full flex items-center justify-center">
@@ -193,9 +193,9 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
                     onMouseEnter={evadeCursor}
                     onTouchStart={evadeCursor}
                     onClick={evadeCursor}
-                    className="absolute px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white/80 transition-colors text-sm font-medium"
+                    className="absolute px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white/80 transition-colors text-sm font-medium tracking-wide"
                   >
-                    Nggak dulu 😜
+                    No 🤪
                   </motion.button>
                 </div>
               </div>
