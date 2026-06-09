@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FileUpload } from '../ui/FileUpload';
-import { Music, Image as ImageIcon, Play, Pause, AlertCircle, X } from 'lucide-react';
+import { Music, Image as ImageIcon, Play, Pause, AlertCircle, X, Search, Loader2 } from 'lucide-react';
 import { CURATED_SONGS } from '@/lib/constants';
 
 interface MediaStepProps {
@@ -15,52 +15,49 @@ interface MediaStepProps {
 
 export function MediaStep({ data, onChange }: MediaStepProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [playingId, setPlayingId] = React.useState<string | null>(null);
-  const [audioError, setAudioError] = React.useState<string | null>(null);
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const [audioError, setAudioError] = useState<string | null>(null);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [songsList, setSongsList] = useState<any[]>(CURATED_SONGS);
+  const [isSearching, setIsSearching] = useState(false);
 
   const togglePlay = (url: string, id: string) => {
     setAudioError(null);
     
-    // If already playing this song, pause it
     if (playingId === id && audioRef.current) {
       audioRef.current.pause();
       setPlayingId(null);
       return;
     }
 
-    // Pause any currently playing audio
     if (audioRef.current) {
       audioRef.current.pause();
     }
 
-    // Use the hidden <audio> element
     const audio = audioRef.current;
     if (audio) {
       audio.src = url;
-      audio.load(); // Force reload the source
+      audio.load();
       
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise
-          .then(() => {
-            setPlayingId(id);
-          })
+          .then(() => setPlayingId(id))
           .catch(() => {
             setPlayingId(null);
-            setAudioError(`Gagal memutar lagu. Coba refresh halaman (F5).`);
+            setAudioError(`Gagal memutar preview lagu ini.`);
           });
       }
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     
     const handleEnded = () => setPlayingId(null);
-    const handleError = () => {
-      setPlayingId(null);
-    };
+    const handleError = () => setPlayingId(null);
     
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('error', handleError);
@@ -72,34 +69,68 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const searchItunes = async () => {
+      if (!searchQuery.trim()) {
+        setSongsList(CURATED_SONGS);
+        return;
+      }
+      setIsSearching(true);
+      try {
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&entity=song&limit=5`);
+        const result = await res.json();
+        const mapped = result.results
+          .filter((r: any) => r.previewUrl)
+          .map((r: any) => ({
+            id: r.trackId.toString(),
+            name: `${r.trackName} - ${r.artistName}`,
+            url: r.previewUrl,
+            thumb: r.artworkUrl60
+          }));
+        setSongsList(mapped);
+      } catch (e) {
+        console.error("iTunes search error:", e);
+      } finally {
+        setIsSearching(false);
+      }
+    };
+
+    const delay = setTimeout(() => {
+      searchItunes();
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [searchQuery]);
+
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-8">
-      {/* Hidden audio element for reliable playback */}
       <audio ref={audioRef} preload="none">
         <source type="audio/mpeg" />
       </audio>
 
       <div>
-        <h2 className="text-2xl font-display font-medium text-white mb-2">Upload foto kamu</h2>
+        <h2 className="text-2xl font-display font-medium text-white mb-2">Pilih Foto & Lagu</h2>
+        <p className="text-white/60">Buat momen jadi lebih spesial :3</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-12">
+        {/* FOTO SECTION */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2 text-love-400">
             <ImageIcon size={20} />
-            <h3 className="font-medium text-white">Foto</h3>
+            <h3 className="font-medium text-white">Foto (Wajib Maks 1)</h3>
           </div>
           <FileUpload 
-            label="Unggah maksimal 2 foto !"
+            label="Unggah 1 foto terbaik kalian!"
             accept="image/*"
-            multiple={true}
-            maxFiles={2}
-            onFileSelect={files => onChange({ images: [...data.images, ...files].slice(0, 2) })}
+            multiple={false}
+            maxFiles={1}
+            onFileSelect={files => onChange({ images: [files[0]] })}
           />
           {data.images.length > 0 && (
-            <div className="grid grid-cols-2 gap-3 mt-4">
+            <div className="grid grid-cols-1 gap-3 mt-4">
               {data.images.map((file, i) => (
-                <div key={i} className="relative aspect-square rounded-xl overflow-hidden group bg-black/40 border border-white/10">
+                <div key={i} className="relative aspect-square rounded-xl overflow-hidden group bg-black/40 border border-white/10 max-w-[200px] mx-auto">
                   <img 
                     src={URL.createObjectURL(file)} 
                     alt="Preview" 
@@ -107,9 +138,7 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
                   />
                   <button
                     onClick={() => {
-                      const newImages = [...data.images];
-                      newImages.splice(i, 1);
-                      onChange({ images: newImages });
+                      onChange({ images: [] });
                     }}
                     className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all"
                   >
@@ -121,10 +150,31 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
           )}
         </div>
 
+        {/* MUSIK SECTION */}
         <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2 text-love-400 mb-2">
-            <Music size={20} />
-            <h3 className="font-medium text-white">Musik Latar</h3>
+          <div className="flex items-center justify-between text-love-400 mb-2">
+            <div className="flex items-center gap-2">
+              <Music size={20} />
+              <h3 className="font-medium text-white">Cari Lagu Latar</h3>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search size={16} className="text-white/40" />
+            </div>
+            <input
+              type="text"
+              placeholder="Cari lagu di iTunes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-black/40 border border-white/20 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-love-400 focus:ring-1 focus:ring-love-400 transition-all"
+            />
+            {isSearching && (
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <Loader2 size={16} className="text-love-400 animate-spin" />
+              </div>
+            )}
           </div>
           
           {audioError && (
@@ -134,8 +184,12 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
             </div>
           )}
           
-          <div className="flex flex-col gap-3">
-            {CURATED_SONGS.map(song => (
+          <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+            {songsList.length === 0 && !isSearching && (
+              <p className="text-white/40 text-sm text-center py-4">Lagu tidak ditemukan.</p>
+            )}
+            
+            {songsList.map(song => (
               <div 
                 key={song.id}
                 className={`
@@ -144,11 +198,14 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
                 `}
                 onClick={() => onChange({ audioUrl: song.url })}
               >
-                <div className="flex items-center gap-3">
-                  <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${data.audioUrl === song.url ? 'border-love-400' : 'border-white/30'}`}>
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className={`shrink-0 w-4 h-4 rounded-full border flex items-center justify-center ${data.audioUrl === song.url ? 'border-love-400' : 'border-white/30'}`}>
                     {data.audioUrl === song.url && <div className="w-2 h-2 rounded-full bg-love-400" />}
                   </div>
-                  <span className="text-sm font-medium text-white">{song.name}</span>
+                  {song.thumb && (
+                    <img src={song.thumb} alt="cover" className="w-8 h-8 rounded-md object-cover" />
+                  )}
+                  <span className="text-sm font-medium text-white truncate">{song.name}</span>
                 </div>
                 
                 <button 
@@ -156,7 +213,7 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
                     e.stopPropagation();
                     togglePlay(song.url, song.id);
                   }}
-                  className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors"
+                  className="shrink-0 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors ml-2"
                 >
                   {playingId === song.id ? <Pause size={14} /> : <Play size={14} />}
                 </button>

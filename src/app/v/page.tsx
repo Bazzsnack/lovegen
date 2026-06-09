@@ -1,0 +1,86 @@
+'use client';
+
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { SceneCanvas } from '@/components/canvas/SceneCanvas';
+import { AudioEntryOverlay } from '@/components/canvas/AudioEntryOverlay';
+
+function StatelessViewer() {
+  const searchParams = useSearchParams();
+  const dataParam = searchParams.get('d');
+  
+  const [data, setData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [hasEntered, setHasEntered] = useState(false);
+
+  useEffect(() => {
+    if (!dataParam) {
+      setError("Data kado tidak ditemukan di URL.");
+      return;
+    }
+
+    try {
+      // Decode Base64 string handling UTF-8 properly
+      const decodedStr = decodeURIComponent(atob(dataParam));
+      const parsed = JSON.parse(decodedStr);
+      
+      // Reconstruct payload to internal schema
+      setData({
+        title: parsed.t || '',
+        subtitle: parsed.s || '',
+        images: parsed.i ? [parsed.i] : [],
+        audioUrl: parsed.a || '',
+        theme: parsed.th || 'stars',
+        particleDensity: parsed.p || 50
+      });
+    } catch (e) {
+      console.error("Base64 decode error", e);
+      setError("Link kado tidak valid atau rusak.");
+    }
+  }, [dataParam]);
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <div className="bg-white/10 border border-white/20 rounded-2xl p-8 max-w-sm text-center">
+          <h1 className="text-xl font-display text-white mb-2">Oops!</h1>
+          <p className="text-white/60 text-sm">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-love-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full h-screen overflow-hidden bg-black">
+      {!hasEntered && (
+        <AudioEntryOverlay 
+          title={data.title}
+          audioUrl={data.audioUrl} 
+          onEnter={() => setHasEntered(true)} 
+        />
+      )}
+      
+      {/* Preload SceneCanvas but don't show text/animations until entered */}
+      <SceneCanvas 
+        data={data} 
+        isEntered={hasEntered} 
+      />
+    </div>
+  );
+}
+
+export default function StatelessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <StatelessViewer />
+    </Suspense>
+  );
+}
