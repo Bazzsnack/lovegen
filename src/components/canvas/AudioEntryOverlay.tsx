@@ -75,19 +75,84 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
           >
             <motion.div 
               animate={{ y: [0, -15, 0] }}
-              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-              className="flex flex-col items-center gap-4 cursor-pointer"
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+              className="flex flex-col items-center gap-6 cursor-pointer relative"
               onClick={() => setIntroState('dialog')}
             >
-              <div className="relative w-32 h-32 flex items-center justify-center rounded-3xl bg-love-500/20 border border-love-400/30 shadow-[0_0_50px_-12px_rgba(232,67,147,0.5)]">
-                <Gift className="w-16 h-16 text-love-400" />
-                <motion.div 
-                  className="absolute inset-0 rounded-3xl border-2 border-love-400/50"
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                />
+              {/* Box Container */}
+              <div className="relative w-48 h-48 flex items-center justify-center">
+                {/* Glow */}
+                <div className="absolute inset-0 bg-love-500/30 rounded-full blur-3xl opacity-60 animate-pulse" />
+                
+                {/* 3D SVG Gift Box */}
+                <svg viewBox="0 0 200 200" className="w-full h-full relative z-10 overflow-visible drop-shadow-2xl">
+                  <defs>
+                    <linearGradient id="boxLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#e11d48"/>
+                      <stop offset="100%" stopColor="#881337"/>
+                    </linearGradient>
+                    <linearGradient id="boxRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#fb7185"/>
+                      <stop offset="100%" stopColor="#be123c"/>
+                    </linearGradient>
+                    <linearGradient id="boxTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#fecdd3"/>
+                      <stop offset="100%" stopColor="#fb7185"/>
+                    </linearGradient>
+                    <linearGradient id="ribbonLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#fef08a"/>
+                      <stop offset="100%" stopColor="#a16207"/>
+                    </linearGradient>
+                    <linearGradient id="ribbonRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#fde047"/>
+                      <stop offset="100%" stopColor="#ca8a04"/>
+                    </linearGradient>
+                    <linearGradient id="ribbonTop" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#fef9c3"/>
+                      <stop offset="100%" stopColor="#eab308"/>
+                    </linearGradient>
+                    <filter id="boxShadow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="15" stdDeviation="15" floodColor="#e11d48" floodOpacity="0.5"/>
+                    </filter>
+                  </defs>
+
+                  {/* Base Box */}
+                  <g filter="url(#boxShadow)">
+                    <path d="M 100 160 L 40 130 L 40 80 L 100 110 Z" fill="url(#boxLeft)" stroke="#9f1239" strokeWidth="1" strokeLinejoin="round"/>
+                    <path d="M 100 160 L 160 130 L 160 80 L 100 110 Z" fill="url(#boxRight)" stroke="#be123c" strokeWidth="1" strokeLinejoin="round"/>
+                    <path d="M 65 142.5 L 75 147.5 L 75 97.5 L 65 92.5 Z" fill="url(#ribbonLeft)" />
+                    <path d="M 135 142.5 L 125 147.5 L 125 97.5 L 135 92.5 Z" fill="url(#ribbonRight)" />
+                  </g>
+
+                  {/* Lid (Animated to float up and down) */}
+                  <motion.g 
+                    animate={{ y: [0, -8, 0] }} 
+                    transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                  >
+                    <path d="M 100 115 L 35 82.5 L 35 62.5 L 100 95 Z" fill="url(#boxLeft)" stroke="#9f1239" strokeWidth="1" strokeLinejoin="round"/>
+                    <path d="M 100 115 L 165 82.5 L 165 62.5 L 100 95 Z" fill="url(#boxRight)" stroke="#be123c" strokeWidth="1" strokeLinejoin="round"/>
+                    <path d="M 100 95 L 35 62.5 L 100 30 L 165 62.5 Z" fill="url(#boxTop)" stroke="#fb7185" strokeWidth="1" strokeLinejoin="round"/>
+                    <path d="M 65 97.5 L 75 102.5 L 75 82.5 L 65 77.5 Z" fill="url(#ribbonLeft)" />
+                    <path d="M 135 97.5 L 125 102.5 L 125 82.5 L 135 77.5 Z" fill="url(#ribbonRight)" />
+                    <path d="M 65 77.5 L 75 82.5 L 140 50 L 130 45 Z" fill="url(#ribbonTop)" />
+                    <path d="M 135 77.5 L 125 82.5 L 60 50 L 70 45 Z" fill="url(#ribbonTop)" />
+                    <ellipse cx="100" cy="62.5" rx="20" ry="10" fill="#ca8a04" opacity="0.4" filter="blur(3px)" />
+                    <path d="M 100 62.5 C 50 10, 30 50, 95 65 Z" fill="url(#ribbonLeft)" stroke="#eab308" strokeWidth="1"/>
+                    <path d="M 100 62.5 C 150 10, 170 50, 105 65 Z" fill="url(#ribbonRight)" stroke="#eab308" strokeWidth="1"/>
+                    <path d="M 100 65 L 75 100 L 85 102 L 103 70 Z" fill="url(#ribbonLeft)" />
+                    <path d="M 100 65 L 125 100 L 115 102 L 97 70 Z" fill="url(#ribbonRight)" />
+                    <ellipse cx="100" cy="62.5" rx="12" ry="9" fill="url(#ribbonTop)" stroke="#ca8a04" strokeWidth="1"/>
+                  </motion.g>
+                </svg>
               </div>
-              <p className="text-white/80 font-medium tracking-wide">Ada pesan untukmu...</p>
+
+              <motion.p 
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-white/90 font-medium tracking-widest uppercase text-sm mt-4 drop-shadow-lg"
+              >
+                Tap to Open
+              </motion.p>
             </motion.div>
           </motion.div>
         )}
