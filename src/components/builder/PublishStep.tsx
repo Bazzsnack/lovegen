@@ -250,13 +250,13 @@ export function PublishStep({ data }: PublishStepProps) {
               Dukung Kreator <Heart className="text-love-400 fill-love-400 animate-pulse" size={24} />
             </h3>
             <p className="text-white/80 leading-relaxed text-sm">
-              Lovegen dibuat gratis agar kamu bisa bebas berekspresi. Jika proyek ini membantumu, dukungan secangkir kopi akan sangat berarti untuk menjaga server tetap hidup.
+              Trakter mimin naspad guyss seikhlasnya hehehe, biar makin semangat lagi buat upgrade web ini, thx u all : D
             </p>
           </div>
 
           <div className="shrink-0 flex flex-col items-center gap-3">
             <div className="bg-white p-2 rounded-xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-300">
-              <img src="/qr.jpeg" alt="QR Trakteer" className="w-28 h-28 rounded-lg object-cover" />
+              <img src="/qr.jpeg" alt="QR Trakteer" className="w-40 h-40 rounded-lg object-cover" />
             </div>
             <span className="text-xs font-medium text-love-200 bg-love-500/20 px-4 py-1.5 rounded-full flex items-center gap-1.5 border border-love-500/30">
               <Coffee size={12} /> Scan Trakteer

@@ -198,14 +198,16 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
                 `}
                 onClick={() => onChange({ audioUrl: song.url })}
               >
-                <div className="flex items-center gap-3 overflow-hidden">
+                <div className="flex items-center gap-3 flex-1 min-w-0 pr-2">
                   <div className={`shrink-0 w-4 h-4 rounded-full border flex items-center justify-center ${data.audioUrl === song.url ? 'border-love-400' : 'border-white/30'}`}>
                     {data.audioUrl === song.url && <div className="w-2 h-2 rounded-full bg-love-400" />}
                   </div>
                   {song.thumb && (
-                    <img src={song.thumb} alt="cover" className="w-8 h-8 rounded-md object-cover" />
+                    <img src={song.thumb} alt="cover" className="w-8 h-8 rounded-md object-cover shrink-0" />
                   )}
-                  <span className="text-sm font-medium text-white truncate">{song.name}</span>
+                  <span className="text-sm font-medium text-white truncate min-w-0 block">
+                    {song.name}
+                  </span>
                 </div>
                 
                 <button 
