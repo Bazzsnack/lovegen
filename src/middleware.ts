@@ -13,6 +13,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/auth') ||
     pathname.startsWith('/font') ||
+    pathname.startsWith('/v') ||
     pathname === '/not-found' ||
     pathname === '/' ||
     RESERVED_SLUGS.includes(pathname.replace('/', ''))

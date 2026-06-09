@@ -5,6 +5,7 @@ import { Button } from '../ui/Button';
 import { CheckCircle2, Globe, Loader2, AlertCircle, ExternalLink, Copy, Check, Heart, Coffee, Download } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import QRCodeStyling from 'qr-code-styling';
+import { compressToEncodedURIComponent } from 'lz-string';
 
 interface PublishStepProps {
   data?: any;
@@ -28,14 +29,14 @@ export function PublishStep({ data }: PublishStepProps) {
       qrRef.current.innerHTML = '';
       
       qrCodeInstance.current = new QRCodeStyling({
-        width: 200,
-        height: 200,
+        width: 280,
+        height: 280,
         data: publishedUrl,
-        margin: 0,
+        margin: 8,
         qrOptions: {
           typeNumber: 0,
           mode: 'Byte' as any,
-          errorCorrectionLevel: 'H'
+          errorCorrectionLevel: 'L'
         },
         dotsOptions: {
           color: '#ff1e46',
@@ -131,8 +132,8 @@ export function PublishStep({ data }: PublishStepProps) {
       };
       
       const jsonStr = JSON.stringify(payload);
-      const base64Str = btoa(encodeURIComponent(jsonStr));
-      const fullUrl = `${window.location.origin}/v?d=${base64Str}`;
+      const compressed = compressToEncodedURIComponent(jsonStr);
+      const fullUrl = `${window.location.origin}/v?d=${compressed}`;
       setPublishedUrl(fullUrl);
       
     } catch (e: any) {

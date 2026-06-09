@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { SceneCanvas } from '@/components/canvas/SceneCanvas';
 import { AudioEntryOverlay } from '@/components/canvas/AudioEntryOverlay';
+import { decompressFromEncodedURIComponent } from 'lz-string';
 
 function StatelessViewer() {
   const searchParams = useSearchParams();
@@ -20,8 +21,9 @@ function StatelessViewer() {
     }
 
     try {
-      // Decode Base64 string handling UTF-8 properly
-      const decodedStr = decodeURIComponent(atob(dataParam));
+      // Decompress LZ-string encoded payload
+      const decodedStr = decompressFromEncodedURIComponent(dataParam);
+      if (!decodedStr) throw new Error('Decompression failed');
       const parsed = JSON.parse(decodedStr);
       
       // Reconstruct payload to internal schema
