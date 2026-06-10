@@ -205,7 +205,7 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
                   {song.thumb && (
                     <img src={song.thumb} alt="cover" className="w-8 h-8 rounded-md object-cover shrink-0" />
                   )}
-                  <span className="text-sm font-medium text-white truncate min-w-0 block">
+                  <span className="text-sm font-medium text-white truncate min-w-0 block w-full">
                     {song.name}
                   </span>
                 </div>

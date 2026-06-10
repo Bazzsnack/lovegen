@@ -92,7 +92,7 @@ export function BuilderWizard() {
       </div>
 
       {/* Step Content */}
-      <GlassPanel className="flex-1 p-8 mb-8 min-h-[500px]">
+      <GlassPanel className="flex-1 p-4 md:p-8 mb-8 min-h-[500px] w-full max-w-full overflow-hidden">
         {renderStep()}
       </GlassPanel>
 
