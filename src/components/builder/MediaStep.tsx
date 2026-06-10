@@ -196,29 +196,38 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
                   flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer
                   ${data.audioUrl === song.url ? 'border-love-400 bg-love-500/10' : 'border-white/10 bg-black/20 hover:border-white/30'}
                 `}
-                onClick={() => onChange({ audioUrl: song.url })}
+                onClick={() => {
+                  onChange({ audioUrl: song.url });
+                  togglePlay(song.url, song.id);
+                }}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0 pr-2">
                   <div className={`shrink-0 w-4 h-4 rounded-full border flex items-center justify-center ${data.audioUrl === song.url ? 'border-love-400' : 'border-white/30'}`}>
                     {data.audioUrl === song.url && <div className="w-2 h-2 rounded-full bg-love-400" />}
                   </div>
                   {song.thumb && (
-                    <img src={song.thumb} alt="cover" className="w-8 h-8 rounded-md object-cover shrink-0" />
+                    <div className="relative shrink-0 w-8 h-8 rounded-md overflow-hidden">
+                      <img src={song.thumb} alt="cover" className="w-full h-full object-cover" />
+                      {playingId === song.id && (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-[2px]">
+                          <div className="w-3 h-3 flex items-center justify-between">
+                            <div className="w-[3px] h-full bg-love-400 animate-[bounce_1s_infinite]" />
+                            <div className="w-[3px] h-full bg-love-400 animate-[bounce_1s_infinite_0.2s]" />
+                            <div className="w-[3px] h-full bg-love-400 animate-[bounce_1s_infinite_0.4s]" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   )}
-                  <span className="text-sm font-medium text-white truncate min-w-0 block w-full">
-                    {song.name}
-                  </span>
+                  <div className="flex flex-col min-w-0 flex-1">
+                    <span className="text-sm font-medium text-white truncate w-full block">
+                      {song.name.split(' - ')[0]}
+                    </span>
+                    <span className="text-xs text-white/50 truncate w-full block">
+                      {song.name.split(' - ')[1] || 'Unknown Artist'}
+                    </span>
+                  </div>
                 </div>
-                
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    togglePlay(song.url, song.id);
-                  }}
-                  className="shrink-0 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors ml-2"
-                >
-                  {playingId === song.id ? <Pause size={14} /> : <Play size={14} />}
-                </button>
               </div>
             ))}
           </div>
