@@ -64,14 +64,19 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
 
   return (
     <>
-      <AnimatePresence mode="wait">
+      {/* Persistent black backdrop - stays solid until user clicks "Of Course" */}
+      {introState !== 'opened' && (
+        <div className="fixed inset-0 z-40 bg-black" />
+      )}
+
+      <AnimatePresence>
         {introState === 'gift' && (
           <motion.div 
             key="gift"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md"
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-50 flex items-center justify-center"
           >
             <motion.div 
               animate={{ y: [0, -15, 0] }}
@@ -162,9 +167,9 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
             key="dialog"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 flex items-center justify-center"
           >
             <motion.div 
               initial={{ scale: 0.8, opacity: 0, y: 20 }}
