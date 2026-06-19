@@ -64,10 +64,18 @@ export function AudioEntryOverlay({ title, audioUrl, onEnter }: AudioEntryOverla
 
   return (
     <>
-      {/* Persistent black backdrop - stays solid until user clicks "Of Course" */}
-      {introState !== 'opened' && (
-        <div className="fixed inset-0 z-40 bg-black" />
-      )}
+      {/* Persistent black backdrop - fades out slowly when user clicks "Of Course" */}
+      <AnimatePresence>
+        {introState !== 'opened' && (
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-40 bg-black"
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {introState === 'gift' && (
