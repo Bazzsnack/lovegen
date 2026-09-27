@@ -50,17 +50,33 @@ function ImageParticle({ url, position, scale, opacity }: {
   useEffect(() => {
     const loader = new THREE.TextureLoader();
     loader.crossOrigin = 'anonymous';
-    // Use proxy to avoid CORS issues
-    const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+    
+    // ImgBB and common image hosts support CORS natively — skip proxy for them
+    const isCorsFreindly = url.includes('i.ibb.co') || url.includes('imgbb.com') || url.includes('unsplash.com');
+    const loadUrl = isCorsFreindly ? url : `/api/proxy?url=${encodeURIComponent(url)}`;
     
     loader.load(
-      proxyUrl,
+      loadUrl,
       (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace;
         setTexture(tex);
       },
       undefined,
-      (err) => console.error("Error loading image through proxy:", err)
+      (err) => {
+        console.error("Error loading image:", err, "URL:", url);
+        // Fallback: try direct load if proxy failed
+        if (!isCorsFreindly) {
+          loader.load(
+            url,
+            (tex) => {
+              tex.colorSpace = THREE.SRGBColorSpace;
+              setTexture(tex);
+            },
+            undefined,
+            (err2) => console.error("Direct load also failed:", err2)
+          );
+        }
+      }
     );
   }, [url]);
 
