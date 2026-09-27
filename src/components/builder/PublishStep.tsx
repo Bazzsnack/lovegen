@@ -98,7 +98,8 @@ export function PublishStep({ data }: PublishStepProps) {
       
       if (data.images && data.images.length > 0) {
         if (!imgbbKey) {
-           throw new Error("ImgBB API Key belum diatur. Silakan tambahkan NEXT_PUBLIC_IMGBB_API_KEY di .env.local untuk mengunggah foto.");
+           console.error("NEXT_PUBLIC_IMGBB_API_KEY is not set!");
+           throw new Error("ImgBB API Key belum diatur. Hubungi admin untuk menambahkan NEXT_PUBLIC_IMGBB_API_KEY.");
         }
         setPublishStatus('Mengunggah foto...');
         
@@ -111,11 +112,13 @@ export function PublishStep({ data }: PublishStepProps) {
             body: formData,
           });
           
-          if (uploadRes.ok) {
-            const uploadData = await uploadRes.json();
+          const uploadData = await uploadRes.json();
+          
+          if (uploadRes.ok && uploadData.success) {
             imageUrls.push(uploadData.data.url);
           } else {
-            throw new Error("Gagal mengunggah foto ke server. Coba lagi nanti.");
+            console.error("ImgBB upload failed:", uploadData);
+            throw new Error(uploadData?.error?.message || "Gagal mengunggah foto ke server. Coba lagi nanti.");
           }
         }
       }

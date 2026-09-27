@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { FileUpload } from '../ui/FileUpload';
 import { Music, Image as ImageIcon, Play, Pause, AlertCircle, X, Search, Loader2 } from 'lucide-react';
 import { CURATED_SONGS } from '@/lib/constants';
@@ -21,6 +21,11 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [songsList, setSongsList] = useState<any[]>(CURATED_SONGS);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Cache image preview URLs to avoid re-creating blob URLs on every render
+  const imagePreviewUrls = useMemo(() => {
+    return data.images.map(file => URL.createObjectURL(file));
+  }, [data.images]);
 
   const togglePlay = (url: string, id: string) => {
     setAudioError(null);
@@ -71,7 +76,7 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
 
   useEffect(() => {
     const searchItunes = async () => {
-      if (!searchQuery.trim()) {
+      if (!searchQuery.trim() || searchQuery.trim().length < 2) {
         setSongsList(CURATED_SONGS);
         return;
       }
@@ -97,7 +102,7 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
 
     const delay = setTimeout(() => {
       searchItunes();
-    }, 500);
+    }, 800);
 
     return () => clearTimeout(delay);
   }, [searchQuery]);
@@ -132,7 +137,7 @@ export function MediaStep({ data, onChange }: MediaStepProps) {
               {data.images.map((file, i) => (
                 <div key={i} className="relative aspect-square rounded-xl overflow-hidden group bg-black/40 border border-white/10 max-w-[200px] mx-auto">
                   <img 
-                    src={URL.createObjectURL(file)} 
+                    src={imagePreviewUrls[i]} 
                     alt="Preview" 
                     className="w-full h-full object-cover"
                   />
