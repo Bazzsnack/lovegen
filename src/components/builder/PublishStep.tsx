@@ -99,13 +99,29 @@ export function PublishStep({ data }: PublishStepProps) {
       if (data.images && data.images.length > 0) {
         if (!imgbbKey) {
            console.error("NEXT_PUBLIC_IMGBB_API_KEY is not set!");
-           throw new Error("ImgBB API Key belum diatur. Hubungi admin untuk menambahkan NEXT_PUBLIC_IMGBB_API_KEY.");
+           throw new Error("ImgBB API Key belum diatur. Hubungi admin.");
         }
         setPublishStatus('Mengunggah foto...');
+        console.log("[Publish] Starting upload, images count:", data.images.length);
         
         for (const file of data.images) {
+          // Convert File to base64 for more reliable upload
+          const base64 = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const result = reader.result as string;
+              // Remove data:image/xxx;base64, prefix
+              resolve(result.split(',')[1]);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+          
           const formData = new FormData();
-          formData.append('image', file);
+          formData.append('image', base64);
+          formData.append('name', file.name || 'lovegen-photo');
+          
+          console.log("[Publish] Uploading to ImgBB, file size:", file.size, "bytes");
           
           const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
             method: 'POST',
@@ -113,12 +129,15 @@ export function PublishStep({ data }: PublishStepProps) {
           });
           
           const uploadData = await uploadRes.json();
+          console.log("[Publish] ImgBB response:", JSON.stringify(uploadData).substring(0, 200));
           
           if (uploadRes.ok && uploadData.success) {
-            imageUrls.push(uploadData.data.url);
+            const imgUrl = uploadData.data.display_url || uploadData.data.url;
+            console.log("[Publish] Upload success, URL:", imgUrl);
+            imageUrls.push(imgUrl);
           } else {
-            console.error("ImgBB upload failed:", uploadData);
-            throw new Error(uploadData?.error?.message || "Gagal mengunggah foto ke server. Coba lagi nanti.");
+            console.error("[Publish] ImgBB upload failed:", uploadData);
+            throw new Error(uploadData?.error?.message || "Gagal mengunggah foto. Coba lagi.");
           }
         }
       }
@@ -130,9 +149,11 @@ export function PublishStep({ data }: PublishStepProps) {
         s: data.subtitle || '',
         i: imageUrls[0] || '', 
         a: data.audioUrl || '',
-        th: data.theme || 'stars',
+        th: data.theme || 'rose-petal',
         p: data.particleDensity || 50
       };
+      
+      console.log("[Publish] Payload:", JSON.stringify(payload));
       
       const jsonStr = JSON.stringify(payload);
       const compressed = compressToEncodedURIComponent(jsonStr);

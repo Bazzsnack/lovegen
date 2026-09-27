@@ -10,7 +10,7 @@ export function GlassPanel({
   return (
     <div className={`
       relative overflow-hidden rounded-2xl
-      bg-white/5 backdrop-blur-xl
+      bg-white/5 backdrop-blur-sm
       border border-white/10
       shadow-xl shadow-black/20
       ${className}
