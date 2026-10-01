@@ -86,22 +86,10 @@ function StatelessViewer() {
         pageData={data} 
       />
 
-      {/* Floating photo overlay - uses native HTML img for guaranteed compatibility */}
-      {hasEntered && data.image_urls && data.image_urls.length > 0 && data.image_urls[0] && (
-        <div className="fixed inset-0 z-20 pointer-events-none flex items-center justify-center">
-          <div className="relative w-44 h-44 md:w-56 md:h-56 animate-float">
-            <div className="absolute -inset-3 bg-white/10 rounded-2xl blur-xl" />
-            <img 
-              src={data.image_urls[0]} 
-              alt="Your special photo"
-              className="relative w-full h-full object-cover rounded-2xl border-2 border-white/30 shadow-2xl shadow-love-500/30"
-              crossOrigin="anonymous"
-              onError={(e) => {
-                console.error("Photo failed to load:", data.image_urls[0]);
-                (e.target as HTMLImageElement).style.display = 'none';
-              }}
-            />
-          </div>
+      {/* Tiny debug indicator - remove after fixing */}
+      {hasEntered && (
+        <div className="fixed bottom-2 left-2 z-50 text-[10px] text-white/30 font-mono max-w-[250px] break-all">
+          img: {data.image_urls?.[0] ? data.image_urls[0].substring(0, 60) + '...' : 'NONE'}
         </div>
       )}
     </div>

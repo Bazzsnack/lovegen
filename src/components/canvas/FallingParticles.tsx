@@ -40,58 +40,44 @@ const createHeartGeometry = () => {
 const heartGeometry = createHeartGeometry();
 
 // ------------------------------------------------------------------
-// IMAGE PARTICLE WITH PROXY
+// IMAGE PARTICLE USING HTML (guaranteed mobile compatibility)
 // ------------------------------------------------------------------
 function ImageParticle({ url, position, scale, opacity }: { 
   url: string; position: [number, number, number]; scale: number; opacity: number;
 }) {
-  const [texture, setTexture] = useState<THREE.Texture | null>(null);
-
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    loader.crossOrigin = 'anonymous';
-    
-    // ImgBB and common image hosts support CORS natively — skip proxy for them
-    const isCorsFreindly = url.includes('i.ibb.co') || url.includes('imgbb.com') || url.includes('unsplash.com');
-    const loadUrl = isCorsFreindly ? url : `/api/proxy?url=${encodeURIComponent(url)}`;
-    
-    loader.load(
-      loadUrl,
-      (tex) => {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        setTexture(tex);
-      },
-      undefined,
-      (err) => {
-        console.error("Error loading image:", err, "URL:", url);
-        // Fallback: try direct load if proxy failed
-        if (!isCorsFreindly) {
-          loader.load(
-            url,
-            (tex) => {
-              tex.colorSpace = THREE.SRGBColorSpace;
-              setTexture(tex);
-            },
-            undefined,
-            (err2) => console.error("Direct load also failed:", err2)
-          );
-        }
-      }
-    );
-  }, [url]);
-
-  if (!texture) return null;
-
+  const size = Math.round(scale * 40);
+  
   return (
-    <mesh position={position} scale={scale}>
-      <planeGeometry args={[3, 3]} />
-      <meshBasicMaterial 
-        map={texture} 
-        transparent 
-        opacity={opacity}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
+    <group position={position}>
+      <Html
+        center
+        distanceFactor={10}
+        style={{
+          width: `${size}px`,
+          height: `${size}px`,
+          pointerEvents: 'none',
+        }}
+      >
+        <img 
+          src={url} 
+          alt=""
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            borderRadius: '12px',
+            opacity: opacity,
+            border: '2px solid rgba(255,255,255,0.2)',
+            boxShadow: '0 0 20px rgba(255,100,178,0.3)',
+          }}
+          crossOrigin="anonymous"
+          onError={(e) => {
+            console.error("Image particle failed:", url);
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
+        />
+      </Html>
+    </group>
   );
 }
 
