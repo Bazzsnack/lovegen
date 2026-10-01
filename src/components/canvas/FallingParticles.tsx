@@ -40,44 +40,59 @@ const createHeartGeometry = () => {
 const heartGeometry = createHeartGeometry();
 
 // ------------------------------------------------------------------
-// IMAGE PARTICLE USING HTML (guaranteed mobile compatibility)
+// IMAGE PARTICLE (TextureLoader + proxy)
 // ------------------------------------------------------------------
 function ImageParticle({ url, position, scale, opacity }: { 
   url: string; position: [number, number, number]; scale: number; opacity: number;
 }) {
-  const size = Math.round(scale * 40);
-  
+  const [texture, setTexture] = useState<THREE.Texture | null>(null);
+
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    loader.crossOrigin = 'anonymous';
+    
+    // Always use proxy to guarantee CORS compatibility
+    const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+    
+    console.log("[ImageParticle] Loading via proxy:", url);
+    
+    loader.load(
+      proxyUrl,
+      (tex) => {
+        console.log("[ImageParticle] Texture loaded successfully!");
+        tex.colorSpace = THREE.SRGBColorSpace;
+        setTexture(tex);
+      },
+      undefined,
+      (err) => {
+        console.error("[ImageParticle] Proxy load failed, trying direct:", err);
+        // Fallback: try loading directly
+        loader.load(
+          url,
+          (tex) => {
+            console.log("[ImageParticle] Direct load succeeded!");
+            tex.colorSpace = THREE.SRGBColorSpace;
+            setTexture(tex);
+          },
+          undefined,
+          (err2) => console.error("[ImageParticle] Direct load also failed:", err2)
+        );
+      }
+    );
+  }, [url]);
+
+  if (!texture) return null;
+
   return (
-    <group position={position}>
-      <Html
-        center
-        distanceFactor={10}
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          pointerEvents: 'none',
-        }}
-      >
-        <img 
-          src={url} 
-          alt=""
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            borderRadius: '12px',
-            opacity: opacity,
-            border: '2px solid rgba(255,255,255,0.2)',
-            boxShadow: '0 0 20px rgba(255,100,178,0.3)',
-          }}
-          crossOrigin="anonymous"
-          onError={(e) => {
-            console.error("Image particle failed:", url);
-            (e.target as HTMLImageElement).style.display = 'none';
-          }}
-        />
-      </Html>
-    </group>
+    <mesh position={position} scale={scale}>
+      <planeGeometry args={[3, 3]} />
+      <meshBasicMaterial 
+        map={texture} 
+        transparent 
+        opacity={opacity}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
   );
 }
 

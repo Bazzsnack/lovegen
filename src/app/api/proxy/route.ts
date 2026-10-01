@@ -6,25 +6,52 @@ export async function GET(request: NextRequest) {
     return new NextResponse('Missing url parameter', { status: 400 });
   }
 
+  console.log('[Proxy] Fetching:', url);
+
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; LovegenProxy/1.0)',
+        'Accept': 'image/*,*/*',
+      },
+      redirect: 'follow',
+    });
+
+    console.log('[Proxy] Response status:', response.status, 'Content-Type:', response.headers.get('Content-Type'));
+
     if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+      console.error('[Proxy] Fetch failed:', response.status, response.statusText);
+      return new NextResponse(`Upstream error: ${response.status}`, { status: 502 });
     }
 
     const buffer = await response.arrayBuffer();
-    const headers = new Headers();
-    headers.set('Content-Type', response.headers.get('Content-Type') || 'image/jpeg');
-    headers.set('Cache-Control', 'public, max-age=31536000, immutable');
-    // Allow CORS
-    headers.set('Access-Control-Allow-Origin', '*');
-
+    console.log('[Proxy] Success, size:', buffer.byteLength, 'bytes');
+    
+    const contentType = response.headers.get('Content-Type') || 'image/jpeg';
+    
     return new NextResponse(buffer, {
       status: 200,
-      headers,
+      headers: {
+        'Content-Type': contentType,
+        'Cache-Control': 'public, max-age=31536000, immutable',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+      },
     });
   } catch (error) {
-    console.error('Image proxy error:', error);
+    console.error('[Proxy] Error:', error);
     return new NextResponse('Error fetching image', { status: 500 });
   }
+}
+
+// Handle preflight CORS requests
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+    },
+  });
 }
